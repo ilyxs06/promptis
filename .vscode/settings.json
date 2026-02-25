@@ -1,0 +1,61 @@
+{
+  // === FILE WATCHERS - stop watching heavy folders ===
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/vendor/**": true,
+    "**/dist/**": true,
+    "**/storage/**": true,
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/bootstrap/cache/**": true,
+    "**/public/build/**": true
+  },
+
+  // === HIDE heavy folders from explorer ===
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/vendor": true,
+    "**/.git": true,
+    "**/dist": true
+  },
+
+  // === SEARCH - skip these folders ===
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/vendor": true,
+    "**/dist": true,
+    "**/storage/logs": true,
+    "**/bootstrap/cache": true,
+    "**/public/build": true
+  },
+
+  // === PERFORMANCE TWEAKS ===
+  "files.autoSave": "onFocusChange",
+  "editor.minimap.enabled": false,
+  "editor.bracketPairColorization.enabled": false,
+  "editor.guides.bracketPairs": false,
+  "editor.occurrencesHighlight": "off",
+  "editor.renderWhitespace": "none",
+  "editor.smoothScrolling": false,
+  "editor.cursorBlinking": "solid",
+  "editor.cursorSmoothCaretAnimation": "off",
+  "workbench.list.smoothScrolling": false,
+  "terminal.integrated.gpuAcceleration": "off",
+  "extensions.autoUpdate": false,
+
+  // === TYPESCRIPT/JS - reduce overhead ===
+  "typescript.tsserver.maxTsServerMemory": 1024,
+  "javascript.validate.enable": false,
+  "typescript.validate.enable": false,
+
+  // === PHP ===
+  "intelephense.diagnostics.undefinedTypes": false,
+  "intelephense.diagnostics.undefinedFunctions": false,
+  "intelephense.diagnostics.undefinedMethods": false,
+  "intelephense.diagnostics.undefinedProperties": false,
+
+  // === GIT - reduce background git operations ===
+  "git.autorefresh": false,
+  "git.decorations.enabled": false,
+  "git.enableStatusBarSync": false
+}
