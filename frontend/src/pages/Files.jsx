@@ -7,25 +7,12 @@ import {
   TrashIcon,
   ArrowDownTrayIcon,
   FolderIcon,
+  PhotoIcon,
+  ArchiveBoxIcon,
+  ChartBarIcon,
 } from '@heroicons/react/24/outline';
 
-const fileTypeIcons = {
-  pdf: '📄',
-  doc: '📝',
-  docx: '📝',
-  xls: '📊',
-  xlsx: '📊',
-  ppt: '📽️',
-  pptx: '📽️',
-  jpg: '🖼️',
-  jpeg: '🖼️',
-  png: '🖼️',
-  gif: '🖼️',
-  zip: '📦',
-  rar: '📦',
-  txt: '📃',
-  default: '📎',
-};
+
 
 const Files = () => {
   const [projects, setProjects] = useState([]);
@@ -33,6 +20,8 @@ const Files = () => {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
+  const [fileDescription, setFileDescription] = useState('');
+  const [showDescInput, setShowDescInput] = useState(false);
 
   useEffect(() => {
     loadProjects();
@@ -84,11 +73,16 @@ const Files = () => {
 
     const formData = new FormData();
     formData.append('file', file);
+    if (fileDescription.trim()) {
+      formData.append('description', fileDescription.trim());
+    }
 
     setUploading(true);
     try {
       await fileService.upload(selectedProject, formData);
       toast.success('Fichier uploadé avec succès');
+      setFileDescription('');
+      setShowDescInput(false);
       loadFiles(selectedProject);
     } catch (error) {
       toast.error('Erreur lors de l\'upload');
@@ -130,9 +124,12 @@ const Files = () => {
   };
 
   const getFileIcon = (filename) => {
-    if (!filename) return fileTypeIcons.default;
+    if (!filename) return <DocumentIcon className="h-8 w-8 text-indigo-500" />;
     const ext = filename.split('.').pop().toLowerCase();
-    return fileTypeIcons[ext] || fileTypeIcons.default;
+    if (['jpg', 'jpeg', 'png', 'gif'].includes(ext)) return <PhotoIcon className="h-8 w-8 text-green-500" />;
+    if (['zip', 'rar'].includes(ext)) return <ArchiveBoxIcon className="h-8 w-8 text-amber-500" />;
+    if (['xls', 'xlsx'].includes(ext)) return <ChartBarIcon className="h-8 w-8 text-emerald-500" />;
+    return <DocumentIcon className="h-8 w-8 text-indigo-500" />;
   };
 
   const formatFileSize = (bytes) => {
@@ -168,16 +165,36 @@ const Files = () => {
           <h1 className="text-2xl font-bold text-gray-900">Gestion des Fichiers</h1>
           <p className="text-gray-600 mt-1">Gérez les fichiers de vos projets</p>
         </div>
-        <label className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors cursor-pointer">
-          <CloudArrowUpIcon className="h-5 w-5 mr-2" />
-          {uploading ? 'Upload...' : 'Uploader un fichier'}
-          <input
-            type="file"
-            onChange={handleFileUpload}
-            className="hidden"
-            disabled={uploading || !selectedProject}
-          />
-        </label>
+        <div className="flex flex-wrap gap-2 items-center">
+          <button
+            onClick={() => setShowDescInput(!showDescInput)}
+            disabled={!selectedProject}
+            className="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50 text-sm"
+          >
+            + Ajouter une description
+          </button>
+          <label className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors cursor-pointer disabled:opacity-50">
+            <CloudArrowUpIcon className="h-5 w-5 mr-2" />
+            {uploading ? 'Upload...' : 'Uploader un fichier'}
+            <input
+              type="file"
+              onChange={handleFileUpload}
+              className="hidden"
+              disabled={uploading || !selectedProject}
+            />
+          </label>
+        </div>
+        {showDescInput && (
+          <div className="mt-3">
+            <input
+              type="text"
+              value={fileDescription}
+              onChange={(e) => setFileDescription(e.target.value)}
+              placeholder="Description du fichier (optionnel)..."
+              className="w-full sm:w-80 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+            />
+          </div>
+        )}
       </div>
 
       {/* Project Selector */}
@@ -209,7 +226,7 @@ const Files = () => {
                 className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow"
               >
                 <div className="flex items-center mb-3">
-                  <span className="text-3xl mr-3">{getFileIcon(file.filename)}</span>
+                  <div className="mr-3">{getFileIcon(file.filename)}</div>
                   <div className="flex-1 min-w-0">
                     <h3 className="font-medium text-gray-900 truncate" title={file.filename}>
                       {file.filename}
@@ -217,6 +234,11 @@ const Files = () => {
                     <p className="text-xs text-gray-500">
                       {formatFileSize(file.filesize)} • {formatDate(file.created_at)}
                     </p>
+                    {file.description && (
+                      <p className="text-xs text-gray-400 mt-0.5 truncate" title={file.description}>
+                        {file.description}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="flex justify-end space-x-2">

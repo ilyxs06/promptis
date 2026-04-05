@@ -168,7 +168,7 @@ const Dashboard = () => {
         {/* Prochaines étapes */}
         <div className="mt-8 card">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            🚀 Prochaines étapes de développement
+            Prochaines étapes de développement
           </h3>
           <ul className="space-y-3">
             <li className="flex items-start gap-3">

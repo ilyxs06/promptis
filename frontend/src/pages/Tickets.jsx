@@ -12,6 +12,7 @@ import {
   CheckCircleIcon,
   ClockIcon,
   DocumentArrowDownIcon,
+  UserIcon,
 } from '@heroicons/react/24/outline';
 import TicketModal from '../components/TicketModal';
 import { exportTicketsToPDF } from '../utils/pdfExport';
@@ -221,14 +222,23 @@ const Tickets = () => {
                   <p className="text-sm text-gray-600 mb-2 line-clamp-2">
                     {ticket.description}
                   </p>
-                  <div className="flex items-center space-x-4 text-xs text-gray-500">
+                  <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500">
                     <span>Projet: {ticket.project?.title || 'Non assigné'}</span>
+                    {ticket.employee && (
+                      <span className="text-indigo-600 font-medium flex items-center gap-1">
+                        <UserIcon className="h-3.5 w-3.5" />
+                        {ticket.employee.user?.name || `Employé #${ticket.employee_id}`}
+                      </span>
+                    )}
                     <span className="flex items-center">
                       <ClockIcon className="h-3 w-3 mr-1" />
-                      {formatDate(ticket.created_at)}
+                      Créé le {formatDate(ticket.created_at)}
                     </span>
-                    {ticket.assigned_to && (
-                      <span>Assigné à: {ticket.assignee?.name}</span>
+                    {ticket.status === 'resolu' && ticket.resolved_at && (
+                      <span className="flex items-center text-green-600 font-medium">
+                        <CheckCircleIcon className="h-3 w-3 mr-1" />
+                        Résolu le {formatDate(ticket.resolved_at)}
+                      </span>
                     )}
                   </div>
                 </div>

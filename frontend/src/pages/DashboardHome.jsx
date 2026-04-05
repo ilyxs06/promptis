@@ -3,48 +3,139 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { statsService, projectService, ticketService } from '../services/api';
 import {
-  UserGroupIcon,
-  BriefcaseIcon,
-  TicketIcon,
-  BuildingOfficeIcon,
-  ArrowTrendingUpIcon,
-} from '@heroicons/react/24/outline';
-import {
-  PieChart,
-  Pie,
-  Cell,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
+  AreaChart, Area, ResponsiveContainer, Tooltip,
 } from 'recharts';
+import {
+  ArrowTrendingUpIcon,
+  ArrowTrendingDownIcon,
+  BriefcaseIcon,
+  UserGroupIcon,
+  BuildingOfficeIcon,
+  TicketIcon,
+  CheckCircleIcon,
+  ExclamationTriangleIcon,
+  ClockIcon,
+  ChartBarIcon,
+} from '@heroicons/react/24/outline';
 
-const COLORS = ['#4F46E5', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899'];
+/* ─── Simulated sparkline data ──────────────────────────────────────────── */
+const genSparkData = (base, len = 12) =>
+  Array.from({ length: len }, (_, i) => ({
+    v: Math.max(0, base + Math.round((Math.random() - 0.45) * base * 0.4 * (i / len + 0.5))),
+  }));
 
-const StatCard = ({ title, value, icon: Icon, color, trend }) => (
-  <div className="bg-white rounded-xl shadow-sm p-6 border-l-4 hover:shadow-md transition-shadow" style={{ borderLeftColor: color }}>
-    <div className="flex items-center justify-between">
-      <div>
-        <p className="text-sm text-gray-600 mb-1">{title}</p>
-        <p className="text-3xl font-bold text-gray-900">{value}</p>
-        {trend && (
-          <p className="text-xs text-green-600 mt-1 flex items-center">
-            <ArrowTrendingUpIcon className="h-3 w-3 mr-1" />
-            {trend}
-          </p>
-        )}
+/* ─── Stat Card (like the reference image) ──────────────────────────────── */
+const StatCard = ({ label, value, sub, spark, color, trend, trendVal, prefix = '', suffix = '' }) => {
+  const up = trend === 'up';
+  return (
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 flex flex-col gap-2 hover:shadow-md transition-shadow">
+      <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">{label}</p>
+      <p className="text-3xl font-bold text-gray-900 leading-none">
+        {prefix}<span style={{ color }}>{value}</span>{suffix}
+      </p>
+      {sub && <p className="text-xs text-gray-400">{sub}</p>}
+      {/* Mini sparkline */}
+      <div className="h-10 w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={spark} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+            <defs>
+              <linearGradient id={`grad-${label.replace(/\s+/g, '-')}`} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor={color} stopOpacity={0.3} />
+                <stop offset="95%" stopColor={color} stopOpacity={0} />
+              </linearGradient>
+            </defs>
+            <Area
+              type="monotone"
+              dataKey="v"
+              stroke={color}
+              strokeWidth={2}
+              fill={`url(#grad-${label.replace(/\s+/g, '-')})`}
+              dot={false}
+              isAnimationActive={true}
+            />
+            <Tooltip
+              content={({ active, payload }) =>
+                active && payload?.length ? (
+                  <div className="bg-gray-800 text-white text-xs rounded px-2 py-1">
+                    {prefix}{payload[0].value}{suffix}
+                  </div>
+                ) : null
+              }
+            />
+          </AreaChart>
+        </ResponsiveContainer>
       </div>
-      <div className="p-3 rounded-lg" style={{ backgroundColor: `${color}20` }}>
-        <Icon className="h-8 w-8" style={{ color }} />
+      {/* Trend row */}
+      {trendVal !== undefined && (
+        <div className="flex items-center justify-between text-xs mt-1">
+          <span className="text-gray-400">Activité récente</span>
+          <span className={`flex items-center font-semibold ${up ? 'text-green-600' : 'text-red-500'}`}>
+            {up
+              ? <ArrowTrendingUpIcon className="h-3.5 w-3.5 mr-0.5" />
+              : <ArrowTrendingDownIcon className="h-3.5 w-3.5 mr-0.5" />}
+            {trendVal}
+          </span>
+        </div>
+      )}
+    </div>
+  );
+};
+
+/* ─── Progress bar card ──────────────────────────────────────────────────── */
+const ProgressCard = ({ label, value, max, color }) => {
+  const pct = max > 0 ? Math.round((value / max) * 100) : 0;
+  return (
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow">
+      <div className="flex justify-between mb-1">
+        <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">{label}</p>
+        <p className="text-xs font-bold" style={{ color }}>{pct}%</p>
+      </div>
+      <div className="flex items-center gap-2 mb-2">
+        <p className="text-2xl font-bold text-gray-900">{value}</p>
+        <span className="text-xs text-gray-400">/ {max}</span>
+      </div>
+      <div className="w-full bg-gray-100 rounded-full h-2">
+        <div
+          className="h-2 rounded-full transition-all duration-700"
+          style={{ width: `${pct}%`, backgroundColor: color }}
+        />
       </div>
     </div>
-  </div>
-);
+  );
+};
 
+/* ─── Recent row items ───────────────────────────────────────────────────── */
+const statusColors = {
+  planifie: 'bg-gray-100 text-gray-800', 
+  en_cours: 'bg-blue-100 text-blue-800', 
+  en_pause: 'bg-yellow-100 text-yellow-800',
+  termine: 'bg-green-100 text-green-800', 
+  annule: 'bg-red-100 text-red-800',
+  ouvert: 'bg-blue-100 text-blue-800', 
+  resolu: 'bg-green-100 text-green-800', 
+  ferme: 'bg-gray-100 text-gray-800',
+};
+const statusLabels = {
+  planifie: 'Planifié', en_cours: 'En cours', en_pause: 'En pause',
+  termine: 'Terminé', annule: 'Annulé',
+  ouvert: 'Ouvert', resolu: 'Résolu', ferme: 'Fermé',
+};
+const priorityColors = {
+  basse: 'bg-green-100 text-green-800', 
+  moyenne: 'bg-yellow-100 text-yellow-800', 
+  haute: 'bg-orange-100 text-orange-800', 
+  urgente: 'bg-red-100 text-red-800',
+};
+
+// Softer hex colors for sparklines
+const chartColors = {
+  indigo: '#6366f1',
+  emerald: '#10b981',
+  amber: '#f59e0b',
+  red: '#ef4444'
+};
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
 const DashboardHome = () => {
   const { user, isAdmin, isEmployee, isClient } = useAuth();
   const [stats, setStats] = useState(null);
@@ -52,9 +143,7 @@ const DashboardHome = () => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadData();
-  }, []);
+  useEffect(() => { loadData(); }, []);
 
   const loadData = async () => {
     try {
@@ -66,317 +155,230 @@ const DashboardHome = () => {
       setStats(statsData);
       setProjects(projectsData);
       setTickets(ticketsData);
-    } catch (error) {
-      console.error('Erreur de chargement:', error);
-      setStats({
-        totalProjects: 0,
-        activeProjects: 0,
-        completedProjects: 0,
-        totalEmployees: 0,
-        totalClients: 0,
-        openTickets: 0,
-      });
+    } catch (e) {
+      console.error('Erreur chargement:', e);
+      setStats({ totalProjects: 0, activeProjects: 0, completedProjects: 0, totalEmployees: 0, totalClients: 0, openTickets: 0, urgentTickets: 0 });
     } finally {
       setLoading(false);
     }
   };
 
-  // Prepare chart data
- /* const projectStatusData = [
-    { name: 'Planifié', value: projects.filter(p => p.status === 'planifie').length, color: '#6B7280' },
-    { name: 'En cours', value: projects.filter(p => p.status === 'en_cours').length, color: '#F59E0B' },
-    { name: 'En pause', value: projects.filter(p => p.status === 'en_pause').length, color: '#8B5CF6' },
-    { name: 'Terminé', value: projects.filter(p => p.status === 'termine').length, color: '#10B981' },
-    { name: 'Annulé', value: projects.filter(p => p.status === 'annule').length, color: '#EF4444' },
-  ].filter(d => d.value > 0);
-
-  const ticketStatusData = [
-    { name: 'Ouvert', value: tickets.filter(t => t.status === 'ouvert').length, color: '#4F46E5' },
-    { name: 'En cours', value: tickets.filter(t => t.status === 'en_cours').length, color: '#F59E0B' },
-    { name: 'Résolu', value: tickets.filter(t => t.status === 'resolu').length, color: '#10B981' },
-    { name: 'Fermé', value: tickets.filter(t => t.status === 'ferme').length, color: '#6B7280' },
-  ].filter(d => d.value > 0);
-
-  const ticketPriorityData = [
-    { name: 'Basse', value: tickets.filter(t => t.priority === 'basse').length },
-    { name: 'Moyenne', value: tickets.filter(t => t.priority === 'moyenne').length },
-    { name: 'Haute', value: tickets.filter(t => t.priority === 'haute').length },
-    { name: 'Urgente', value: tickets.filter(t => t.priority === 'urgente').length },
-  ];
-*/
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600" />
       </div>
     );
   }
 
+  /* ── Derived numbers ── */
+  const totalProj  = stats?.totalProjects  ?? projects.length;
+  const activeProj = stats?.activeProjects ?? projects.filter(p => p.status === 'en_cours').length;
+  const doneProj   = stats?.completedProjects ?? projects.filter(p => p.status === 'termine').length;
+  const totalEmp   = stats?.totalEmployees ?? 0;
+  const totalCli   = stats?.totalClients ?? 0;
+  const openTick   = stats?.openTickets  ?? tickets.filter(t => t.status === 'ouvert').length;
+  const urgTick    = stats?.urgentTickets ?? tickets.filter(t => t.priority === 'urgente').length;
+  const myProj     = stats?.myProjects   ?? projects.length;
+  const myTick     = stats?.myTickets    ?? tickets.length;
+  const assignedTick = stats?.assignedTickets ?? tickets.length;
+
+  /* ── Recent data (last 5) ── */
+  const recentProjects = [...projects].slice(0, 5);
+  const recentTickets  = [...tickets].filter(t => t.status !== 'ferme').slice(0, 5);
+
+  /* ── Admin stat cards ── */
+  const adminCards = [
+    { label: 'Projets Actifs',  value: activeProj, color: chartColors.indigo, trend: 'up',   trendVal: '+5.1%', spark: genSparkData(activeProj || 3) },
+    { label: 'Terminés',        value: doneProj,   color: chartColors.emerald, trend: 'up',   trendVal: '+3.4%', spark: genSparkData(doneProj || 2) },
+    { label: 'Tickets Ouverts', value: openTick,   color: chartColors.amber, trend: 'down', trendVal: '-2%',   spark: genSparkData(openTick || 4) },
+    { label: 'Tickets Urgents', value: urgTick,    color: chartColors.red, trend: 'down', trendVal: '-1.5%', spark: genSparkData(urgTick  || 1) },
+  ];
+  const employeeCards = [
+    { label: 'Mes Projets',     value: myProj,      color: chartColors.indigo, trend: 'up',   trendVal: '+12%', spark: genSparkData(myProj || 2) },
+    { label: 'Projets Actifs',  value: activeProj,  color: chartColors.emerald, trend: 'up',   trendVal: '+5%',  spark: genSparkData(activeProj || 1) },
+    { label: 'Tickets Assignés',value: assignedTick, color: chartColors.amber, trend: 'down', trendVal: '-3%', spark: genSparkData(assignedTick || 3) },
+    { label: 'Tickets Ouverts', value: openTick,    color: chartColors.red, trend: 'down', trendVal: '-2%',  spark: genSparkData(openTick || 2) },
+  ];
+  const clientCards = [
+    { label: 'Mes Projets',     value: projects.length, color: chartColors.indigo, trend: 'up', trendVal: '+6.1%', spark: genSparkData(projects.length || 2) },
+    { label: 'Projets Actifs',  value: projects.filter(p => p.status === 'en_cours').length, color: chartColors.emerald, trend: 'up', trendVal: '+4%', spark: genSparkData(3) },
+    { label: 'Mes Tickets',     value: tickets.length,  color: chartColors.amber, trend: 'down', trendVal: '-1%', spark: genSparkData(tickets.length || 3) },
+    { label: 'Tickets Ouverts', value: tickets.filter(t => t.status === 'ouvert').length, color: chartColors.red, trend: 'down', trendVal: '-2%', spark: genSparkData(2) },
+  ];
+
+  const cards = isAdmin ? adminCards : isEmployee ? employeeCards : clientCards;
+
   return (
-    <div>
-      {/* Welcome */}
-      <div className="mb-8">
+    <div className="space-y-8">
+
+      {/* ── Welcome ── */}
+      <div>
         <h1 className="text-2xl font-bold text-gray-900">
-          Bienvenue, {user?.name}! 
+          Bienvenue, <span className="text-indigo-600">{user?.name}</span>
         </h1>
-        <p className="text-gray-600 mt-1">
-          Voici un aperçu de votre tableau de bord
-        </p>
+        <p className="text-gray-500 text-sm mt-1">Voici un aperçu de votre activité</p>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {isAdmin && (
-          <>
-            <StatCard
-              title="Projets Actifs"
-              value={stats?.activeProjects || projects.filter(p => p.status === 'en_cours').length}
-              icon={BriefcaseIcon}
-              color="#4F46E5"
-            />
-            <StatCard
-              title="Projets Terminés"
-              value={stats?.completedProjects || projects.filter(p => p.status === 'termine').length}
-              icon={BriefcaseIcon}
-              color="#10B981"
-            />
-            <StatCard
-              title="Employés"
-              value={stats?.totalEmployees || 0}
-              icon={UserGroupIcon}
-              color="#F59E0B"
-            />
-            <StatCard
-              title="Clients"
-              value={stats?.totalClients || 0}
-              icon={BuildingOfficeIcon}
-              color="#8B5CF6"
-            />
-          </>
-        )}
-
-        {isEmployee && (
-          <>
-            <StatCard
-              title="Mes Projets"
-              value={stats?.myProjects || projects.length}
-              icon={BriefcaseIcon}
-              color="#4F46E5"
-            />
-            <StatCard
-              title="Projets Actifs"
-              value={projects.filter(p => p.status === 'en_cours').length}
-              icon={BriefcaseIcon}
-              color="#10B981"
-            />
-            <StatCard
-              title="Tickets Assignés"
-              value={stats?.assignedTickets || tickets.length}
-              icon={TicketIcon}
-              color="#F59E0B"
-            />
-            <StatCard
-              title="Tickets Ouverts"
-              value={tickets.filter(t => t.status === 'ouvert').length}
-              icon={TicketIcon}
-              color="#EF4444"
-            />
-          </>
-        )}
-
-        {isClient && (
-          <>
-            <StatCard
-              title="Mes Projets"
-              value={projects.length}
-              icon={BriefcaseIcon}
-              color="#4F46E5"
-            />
-            <StatCard
-              title="Projets Actifs"
-              value={projects.filter(p => p.status === 'en_cours').length}
-              icon={BriefcaseIcon}
-              color="#10B981"
-            />
-            <StatCard
-              title="Mes Tickets"
-              value={tickets.length}
-              icon={TicketIcon}
-              color="#F59E0B"
-            />
-            <StatCard
-              title="Tickets Ouverts"
-              value={tickets.filter(t => t.status === 'ouvert').length}
-              icon={TicketIcon}
-              color="#EF4444"
-            />
-          </>
-        )}
+      {/* ── Sparkline stat cards ── */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+        {cards.map((c) => (
+          <StatCard key={c.label} {...c} />
+        ))}
       </div>
 
-      {/* Charts Section - commenté
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <div className="bg-white rounded-xl shadow-sm p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            📊 Statut des Projets
-          </h3>
-          {projectStatusData.length > 0 ? (
-            <ResponsiveContainer width="100%" height={250}>
-              <PieChart>
-                <Pie
-                  data={projectStatusData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={100}
-                  paddingAngle={5}
-                  dataKey="value"
-                  label={({ name, value }) => `${name}: ${value}`}
-                >
-                  {projectStatusData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
-          ) : (
-            <div className="flex items-center justify-center h-64 text-gray-500">
-              Aucun projet pour le moment
-            </div>
-          )}
-        </div>
-
-        <div className="bg-white rounded-xl shadow-sm p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            🎫 Tickets par Priorité
-          </h3>
-          {tickets.length > 0 ? (
-            <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={ticketPriorityData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis allowDecimals={false} />
-                <Tooltip />
-                <Bar dataKey="value" name="Tickets" radius={[4, 4, 0, 0]}>
-                  {ticketPriorityData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          ) : (
-            <div className="flex items-center justify-center h-64 text-gray-500">
-              Aucun ticket pour le moment
-            </div>
-          )}
-        </div>
-      </div>
-
-      {tickets.length > 0 && (
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            📈 Statut des Tickets
-          </h3>
-          <ResponsiveContainer width="100%" height={200}>
-            <PieChart>
-              <Pie
-                data={ticketStatusData}
-                cx="50%"
-                cy="50%"
-                outerRadius={80}
-                dataKey="value"
-                label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-              >
-                {ticketStatusData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
+      {/* ── Admin extra: Progress cards ── */}
+      {isAdmin && (
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+          <ProgressCard label="Taux de complétion" value={doneProj}   max={totalProj || 1} color={chartColors.emerald} />
+          <ProgressCard label="Employés actifs"    value={totalEmp}   max={totalEmp || 1}  color={chartColors.indigo} />
+          <ProgressCard label="Clients actifs"     value={totalCli}   max={totalCli || 1}  color={chartColors.amber} />
         </div>
       )}
-      */}
 
-      {/* Quick Actions */}
-      <div className="bg-white rounded-xl shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">
-          Actions Rapides
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {isAdmin && (
-            <>
-              <Link
-                to="/employees"
-                className="flex items-center gap-3 p-4 rounded-lg border border-gray-200 hover:border-indigo-500 hover:bg-indigo-50 transition-colors"
-              >
-                <UserGroupIcon className="h-6 w-6 text-indigo-600" />
-                <span className="font-medium">Gérer les employés</span>
-              </Link>
-              <Link
-                to="/clients"
-                className="flex items-center gap-3 p-4 rounded-lg border border-gray-200 hover:border-indigo-500 hover:bg-indigo-50 transition-colors"
-              >
-                <BuildingOfficeIcon className="h-6 w-6 text-indigo-600" />
-                <span className="font-medium">Gérer les clients</span>
-              </Link>
-              <Link
-                to="/projects"
-                className="flex items-center gap-3 p-4 rounded-lg border border-gray-200 hover:border-indigo-500 hover:bg-indigo-50 transition-colors"
-              >
-                <BriefcaseIcon className="h-6 w-6 text-indigo-600" />
-                <span className="font-medium">Gérer les projets</span>
-              </Link>
-              <Link
-                to="/tickets"
-                className="flex items-center gap-3 p-4 rounded-lg border border-gray-200 hover:border-indigo-500 hover:bg-indigo-50 transition-colors"
-              >
-                <TicketIcon className="h-6 w-6 text-indigo-600" />
-                <span className="font-medium">Voir les tickets</span>
-              </Link>
-            </>
-          )}
+      {/* ── Two-column: Recent projects + tickets ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-          {isEmployee && (
-            <>
-              <Link
-                to="/projects"
-                className="flex items-center gap-3 p-4 rounded-lg border border-gray-200 hover:border-indigo-500 hover:bg-indigo-50 transition-colors"
-              >
-                <BriefcaseIcon className="h-6 w-6 text-indigo-600" />
-                <span className="font-medium">Mes projets</span>
-              </Link>
-              <Link
-                to="/tickets"
-                className="flex items-center gap-3 p-4 rounded-lg border border-gray-200 hover:border-indigo-500 hover:bg-indigo-50 transition-colors"
-              >
-                <TicketIcon className="h-6 w-6 text-indigo-600" />
-                <span className="font-medium">Mes tickets</span>
-              </Link>
-            </>
-          )}
+        {/* Recent Projects */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+            <div className="flex items-center gap-2">
+              <BriefcaseIcon className="h-5 w-5 text-indigo-500" />
+              <h2 className="text-sm font-semibold text-gray-900">Projets récents</h2>
+            </div>
+            <Link to="/projects" className="text-xs text-indigo-600 hover:underline">Voir tout →</Link>
+          </div>
+          <div className="divide-y divide-gray-50">
+            {recentProjects.length === 0 && (
+              <p className="text-sm text-gray-400 text-center py-8">Aucun projet</p>
+            )}
+            {recentProjects.map((p) => (
+              <div key={p.id} className="px-6 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="h-8 w-8 rounded-lg bg-indigo-50 flex items-center justify-center flex-shrink-0">
+                    <BriefcaseIcon className="h-4 w-4 text-indigo-500" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-gray-900 truncate">{p.title}</p>
+                    <p className="text-xs text-gray-400 truncate">{p.client?.company_name || '—'}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 flex-shrink-0 ml-3">
+                  {/* Progress bar */}
+                  <div className="hidden sm:flex items-center gap-1.5">
+                    <div className="w-16 bg-gray-100 rounded-full h-1.5">
+                      <div
+                        className="h-1.5 rounded-full"
+                        style={{ width: `${p.progress ?? 0}%`, backgroundColor: '#4F46E5' }}
+                      />
+                    </div>
+                    <span className="text-xs text-gray-400">{p.progress ?? 0}%</span>
+                  </div>
+                  <span 
+                    className={`text-xs font-medium px-2 py-0.5 rounded-full ${statusColors[p.status] || 'bg-gray-100 text-gray-800'}`}
+                  >
+                    {statusLabels[p.status] ?? p.status}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
-          {isClient && (
-            <>
-              <Link
-                to="/projects"
-                className="flex items-center gap-3 p-4 rounded-lg border border-gray-200 hover:border-indigo-500 hover:bg-indigo-50 transition-colors"
-              >
-                <BriefcaseIcon className="h-6 w-6 text-indigo-600" />
-                <span className="font-medium">Voir mes projets</span>
-              </Link>
-              <Link
-                to="/tickets"
-                className="flex items-center gap-3 p-4 rounded-lg border border-gray-200 hover:border-indigo-500 hover:bg-indigo-50 transition-colors"
-              >
-                <TicketIcon className="h-6 w-6 text-indigo-600" />
-                <span className="font-medium">Créer un ticket</span>
-              </Link>
-            </>
-          )}
+        {/* Recent Tickets */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+            <div className="flex items-center gap-2">
+              <TicketIcon className="h-5 w-5 text-orange-500" />
+              <h2 className="text-sm font-semibold text-gray-900">Tickets récents</h2>
+            </div>
+            <Link to="/tickets" className="text-xs text-indigo-600 hover:underline">Voir tout →</Link>
+          </div>
+          <div className="divide-y divide-gray-50">
+            {recentTickets.length === 0 && (
+              <p className="text-sm text-gray-400 text-center py-8">Aucun ticket actif</p>
+            )}
+            {recentTickets.map((t) => (
+              <div key={t.id} className="px-6 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div
+                    className={`h-8 w-8 rounded-lg flex items-center justify-center flex-shrink-0 ${priorityColors[t.priority] || 'bg-gray-100 text-gray-400'}`}
+                  >
+                    {t.priority === 'urgente'
+                      ? <ExclamationTriangleIcon className="h-4 w-4" />
+                      : t.status === 'resolu'
+                      ? <CheckCircleIcon className="h-4 w-4" />
+                      : <ClockIcon className="h-4 w-4" />
+                    }
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-gray-900 truncate">{t.title}</p>
+                    <p className="text-xs text-gray-400 truncate">{t.project?.title || '—'}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 flex-shrink-0 ml-3">
+                  <span
+                    className={`text-xs font-medium px-2 py-0.5 rounded-full ${priorityColors[t.priority] || 'bg-gray-100 text-gray-800'}`}
+                  >
+                    {t.priority}
+                  </span>
+                  <span
+                    className={`text-xs font-medium px-2 py-0.5 rounded-full ${statusColors[t.status] || 'bg-gray-100 text-gray-800'}`}
+                  >
+                    {statusLabels[t.status] ?? t.status}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Quick Actions ── */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <div className="flex items-center gap-2 mb-4">
+          <ChartBarIcon className="h-5 w-5 text-indigo-500" />
+          <h2 className="text-sm font-semibold text-gray-900">Actions Rapides</h2>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {isAdmin && <>
+            <Link to="/employees" className="flex flex-col items-center gap-2 p-4 rounded-xl border border-gray-200 hover:border-indigo-400 hover:bg-indigo-50 transition-all text-center">
+              <UserGroupIcon className="h-6 w-6 text-indigo-500" />
+              <span className="text-xs font-medium text-gray-700">Employés</span>
+            </Link>
+            <Link to="/clients" className="flex flex-col items-center gap-2 p-4 rounded-xl border border-gray-200 hover:border-purple-400 hover:bg-purple-50 transition-all text-center">
+              <BuildingOfficeIcon className="h-6 w-6 text-purple-500" />
+              <span className="text-xs font-medium text-gray-700">Clients</span>
+            </Link>
+            <Link to="/projects" className="flex flex-col items-center gap-2 p-4 rounded-xl border border-gray-200 hover:border-indigo-400 hover:bg-indigo-50 transition-all text-center">
+              <BriefcaseIcon className="h-6 w-6 text-indigo-500" />
+              <span className="text-xs font-medium text-gray-700">Projets</span>
+            </Link>
+            <Link to="/tickets" className="flex flex-col items-center gap-2 p-4 rounded-xl border border-gray-200 hover:border-orange-400 hover:bg-orange-50 transition-all text-center">
+              <TicketIcon className="h-6 w-6 text-orange-500" />
+              <span className="text-xs font-medium text-gray-700">Tickets</span>
+            </Link>
+          </>}
+          {isEmployee && <>
+            <Link to="/projects" className="flex flex-col items-center gap-2 p-4 rounded-xl border border-gray-200 hover:border-indigo-400 hover:bg-indigo-50 transition-all text-center">
+              <BriefcaseIcon className="h-6 w-6 text-indigo-500" />
+              <span className="text-xs font-medium text-gray-700">Mes Projects</span>
+            </Link>
+            <Link to="/tickets" className="flex flex-col items-center gap-2 p-4 rounded-xl border border-gray-200 hover:border-orange-400 hover:bg-orange-50 transition-all text-center">
+              <TicketIcon className="h-6 w-6 text-orange-500" />
+              <span className="text-xs font-medium text-gray-700">Mes Tickets</span>
+            </Link>
+          </>}
+          {isClient && <>
+            <Link to="/projects" className="flex flex-col items-center gap-2 p-4 rounded-xl border border-gray-200 hover:border-indigo-400 hover:bg-indigo-50 transition-all text-center">
+              <BriefcaseIcon className="h-6 w-6 text-indigo-500" />
+              <span className="text-xs font-medium text-gray-700">Mes Projets</span>
+            </Link>
+            <Link to="/tickets" className="flex flex-col items-center gap-2 p-4 rounded-xl border border-gray-200 hover:border-orange-400 hover:bg-orange-50 transition-all text-center">
+              <TicketIcon className="h-6 w-6 text-orange-500" />
+              <span className="text-xs font-medium text-gray-700">Créer un ticket</span>
+            </Link>
+          </>}
         </div>
       </div>
     </div>

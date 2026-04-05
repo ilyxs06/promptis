@@ -139,10 +139,10 @@ const Employees = () => {
                   Employé
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Poste
+                  Poste / Département
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Téléphone
+                  Date d'embauche
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Compétences
@@ -180,11 +180,18 @@ const Employees = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="text-sm text-gray-900">{employee.position}</span>
+                      <div>
+                        <div className="text-sm text-gray-900 font-medium">{employee.position}</div>
+                        {employee.department && (
+                          <div className="text-xs text-gray-500">{employee.department}</div>
+                        )}
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="text-sm text-gray-500">
-                        {employee.phone || '-'}
+                        {employee.hire_date
+                          ? new Date(employee.hire_date).toLocaleDateString('fr-FR')
+                          : '—'}
                       </span>
                     </td>
                     <td className="px-6 py-4">

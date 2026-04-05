@@ -7,6 +7,8 @@ const EmployeeModal = ({ employee, onClose, onSave }) => {
     email: '',
     password: '',
     position: '',
+    department: '',
+    hire_date: '',
     phone: '',
     skills: '',
   });
@@ -19,6 +21,8 @@ const EmployeeModal = ({ employee, onClose, onSave }) => {
         email: employee.user?.email || '',
         password: '',
         position: employee.position || '',
+        department: employee.department || '',
+        hire_date: employee.hire_date ? employee.hire_date.split('T')[0] : '',
         phone: employee.phone || '',
         skills: employee.skills?.join(', ') || '',
       });
@@ -38,6 +42,8 @@ const EmployeeModal = ({ employee, onClose, onSave }) => {
       name: formData.name,
       email: formData.email,
       position: formData.position,
+      department: formData.department || null,
+      hire_date: formData.hire_date || null,
       phone: formData.phone || null,
       skills: formData.skills
         ? formData.skills.split(',').map((s) => s.trim()).filter(Boolean)
@@ -144,6 +150,35 @@ const EmployeeModal = ({ employee, onClose, onSave }) => {
                 required
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                 placeholder="Développeur Full Stack"
+              />
+            </div>
+
+            {/* Département */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Département
+              </label>
+              <input
+                type="text"
+                name="department"
+                value={formData.department}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                placeholder="IT, RH, Marketing..."
+              />
+            </div>
+
+            {/* Date d'embauche */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Date d'embauche
+              </label>
+              <input
+                type="date"
+                name="hire_date"
+                value={formData.hire_date}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
             </div>
 

@@ -1,16 +1,21 @@
 import { useState, useEffect } from 'react';
 import { projectService, clientService, employeeService } from '../services/api';
+import { useAuth } from '../contexts/AuthContext';
 import toast from 'react-hot-toast';
 import { XMarkIcon, UserPlusIcon, XCircleIcon } from '@heroicons/react/24/outline';
 
 const ProjectModal = ({ isOpen, onClose, onSuccess, project }) => {
+  const { isAdmin } = useAuth();
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     client_id: '',
+    type: '',
     status: 'planifie',
     start_date: '',
     end_date: '',
+    budget: '',
+    progress: 0,
   });
   const [selectedEmployeeIds, setSelectedEmployeeIds] = useState([]);
   const [clients, setClients] = useState([]);
@@ -30,9 +35,12 @@ const ProjectModal = ({ isOpen, onClose, onSuccess, project }) => {
         title: project.title || '',
         description: project.description || '',
         client_id: project.client_id || '',
+        type: project.type || '',
         status: project.status || 'planifie',
         start_date: project.start_date ? project.start_date.split('T')[0] : '',
         end_date: project.end_date ? project.end_date.split('T')[0] : '',
+        budget: project.budget || '',
+        progress: project.progress ?? 0,
       });
       setSelectedEmployeeIds(
         project.employees ? project.employees.map((e) => e.id) : []
@@ -42,9 +50,12 @@ const ProjectModal = ({ isOpen, onClose, onSuccess, project }) => {
         title: '',
         description: '',
         client_id: '',
+        type: '',
         status: 'planifie',
         start_date: '',
         end_date: '',
+        budget: '',
+        progress: 0,
       });
       setSelectedEmployeeIds([]);
     }
@@ -142,7 +153,8 @@ const ProjectModal = ({ isOpen, onClose, onSuccess, project }) => {
                 value={formData.title}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                disabled={!isAdmin}
+                className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${!isAdmin ? 'bg-gray-100 cursor-not-allowed' : ''}`}
                 placeholder="Site e-commerce"
               />
             </div>
@@ -156,7 +168,8 @@ const ProjectModal = ({ isOpen, onClose, onSuccess, project }) => {
                 value={formData.description}
                 onChange={handleChange}
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                disabled={!isAdmin}
+                className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${!isAdmin ? 'bg-gray-100 cursor-not-allowed' : ''}`}
                 placeholder="Description du projet..."
               />
             </div>
@@ -170,7 +183,8 @@ const ProjectModal = ({ isOpen, onClose, onSuccess, project }) => {
                 value={formData.client_id}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                disabled={!isAdmin}
+                className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${!isAdmin ? 'bg-gray-100 cursor-not-allowed' : ''}`}
               >
                 <option value="">Sélectionner un client</option>
                 {clients.map((client) => (
@@ -199,6 +213,22 @@ const ProjectModal = ({ isOpen, onClose, onSuccess, project }) => {
               </select>
             </div>
 
+            {/* Type de projet */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Type de projet
+              </label>
+              <input
+                type="text"
+                name="type"
+                value={formData.type}
+                onChange={handleChange}
+                disabled={!isAdmin}
+                className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${!isAdmin ? 'bg-gray-100 cursor-not-allowed' : ''}`}
+                placeholder="Web, Mobile, Data Engineering..."
+              />
+            </div>
+
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -209,7 +239,8 @@ const ProjectModal = ({ isOpen, onClose, onSuccess, project }) => {
                   name="start_date"
                   value={formData.start_date}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  disabled={!isAdmin}
+                  className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${!isAdmin ? 'bg-gray-100 cursor-not-allowed' : ''}`}
                 />
               </div>
               <div>
@@ -221,79 +252,121 @@ const ProjectModal = ({ isOpen, onClose, onSuccess, project }) => {
                   name="end_date"
                   value={formData.end_date}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  disabled={!isAdmin}
+                  className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${!isAdmin ? 'bg-gray-100 cursor-not-allowed' : ''}`}
                 />
               </div>
             </div>
 
-            {/* Employee Assignment */}
+            {/* Budget */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <span className="flex items-center">
-                  <UserPlusIcon className="h-4 w-4 mr-1" />
-                  Assignation des employés
-                </span>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Budget (MAD)
               </label>
-
-              {/* Selected employees */}
-              {selectedEmployeeIds.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-3">
-                  {selectedEmployeeIds.map((id) => {
-                    const emp = employees.find((e) => e.id === id);
-                    if (!emp) return null;
-                    return (
-                      <span
-                        key={id}
-                        className="inline-flex items-center gap-1 px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium"
-                      >
-                        {emp.user?.name || `Employé #${id}`}
-                        <button
-                          type="button"
-                          onClick={() => removeEmployee(id)}
-                          className="hover:text-indigo-900"
-                        >
-                          <XCircleIcon className="h-4 w-4" />
-                        </button>
-                      </span>
-                    );
-                  })}
-                </div>
-              )}
-
-              {/* Employee list to select from */}
-              <div className="border border-gray-300 rounded-lg max-h-40 overflow-y-auto">
-                {employees.length === 0 ? (
-                  <p className="text-sm text-gray-500 p-3">Aucun employé disponible</p>
-                ) : (
-                  employees.map((emp) => (
-                    <label
-                      key={emp.id}
-                      className={`flex items-center px-3 py-2 cursor-pointer hover:bg-gray-50 border-b border-gray-100 last:border-b-0 ${
-                        selectedEmployeeIds.includes(emp.id) ? 'bg-indigo-50' : ''
-                      }`}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={selectedEmployeeIds.includes(emp.id)}
-                        onChange={() => toggleEmployee(emp.id)}
-                        className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
-                      />
-                      <div className="ml-3">
-                        <p className="text-sm font-medium text-gray-900">
-                          {emp.user?.name || `Employé #${emp.id}`}
-                        </p>
-                        {emp.position && (
-                          <p className="text-xs text-gray-500">{emp.position}</p>
-                        )}
-                      </div>
-                    </label>
-                  ))
-                )}
-              </div>
-              <p className="text-xs text-gray-500 mt-1">
-                {selectedEmployeeIds.length} employé(s) sélectionné(s)
-              </p>
+              <input
+                type="number"
+                name="budget"
+                value={formData.budget}
+                onChange={handleChange}
+                min="0"
+                step="500"
+                disabled={!isAdmin}
+                className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${!isAdmin ? 'bg-gray-100 cursor-not-allowed' : ''}`}
+                placeholder="Ex: 50000"
+              />
             </div>
+
+            {/* Progression */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Avancement : <span className="text-indigo-600 font-semibold">{formData.progress}%</span>
+              </label>
+              <input
+                type="range"
+                name="progress"
+                value={formData.progress}
+                onChange={handleChange}
+                min="0"
+                max="100"
+                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+              />
+              <div className="flex justify-between text-xs text-gray-400 mt-1">
+                <span>0%</span>
+                <span>50%</span>
+                <span>100%</span>
+              </div>
+            </div>
+
+            {/* Employee Assignment */}
+            {isAdmin && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <span className="flex items-center">
+                    <UserPlusIcon className="h-4 w-4 mr-1" />
+                    Assignation des employés
+                  </span>
+                </label>
+
+                {/* Selected employees */}
+                {selectedEmployeeIds.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {selectedEmployeeIds.map((id) => {
+                      const emp = employees.find((e) => e.id === id);
+                      if (!emp) return null;
+                      return (
+                        <span
+                          key={id}
+                          className="inline-flex items-center gap-1 px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium"
+                        >
+                          {emp.user?.name || `Employé #${id}`}
+                          <button
+                            type="button"
+                            onClick={() => removeEmployee(id)}
+                            className="hover:text-indigo-900"
+                          >
+                            <XCircleIcon className="h-4 w-4" />
+                          </button>
+                        </span>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* Employee list to select from */}
+                <div className="border border-gray-300 rounded-lg max-h-40 overflow-y-auto">
+                  {employees.length === 0 ? (
+                    <p className="text-sm text-gray-500 p-3">Aucun employé disponible</p>
+                  ) : (
+                    employees.map((emp) => (
+                      <label
+                        key={emp.id}
+                        className={`flex items-center px-3 py-2 cursor-pointer hover:bg-gray-50 border-b border-gray-100 last:border-b-0 ${
+                          selectedEmployeeIds.includes(emp.id) ? 'bg-indigo-50' : ''
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedEmployeeIds.includes(emp.id)}
+                          onChange={() => toggleEmployee(emp.id)}
+                          className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                        />
+                        <div className="ml-3">
+                          <p className="text-sm font-medium text-gray-900">
+                            {emp.user?.name || `Employé #${emp.id}`}
+                          </p>
+                          {emp.position && (
+                            <p className="text-xs text-gray-500">{emp.position}</p>
+                          )}
+                        </div>
+                      </label>
+                    ))
+                  )}
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  {selectedEmployeeIds.length} employé(s) sélectionné(s)
+                </p>
+              </div>
+            )}
 
             <div className="flex justify-end space-x-3 pt-4">
               <button

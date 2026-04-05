@@ -11,6 +11,7 @@ import {
   UserGroupIcon,
   DocumentArrowDownIcon,
 } from '@heroicons/react/24/outline';
+import { useAuth } from '../contexts/AuthContext';
 import ProjectModal from '../components/ProjectModal';
 import { exportProjectsToPDF } from '../utils/pdfExport';
 
@@ -31,6 +32,7 @@ const statusLabels = {
 };
 
 const Projects = () => {
+  const { user, isAdmin, isEmployee, isClient } = useAuth();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -124,13 +126,15 @@ const Projects = () => {
             <DocumentArrowDownIcon className="h-5 w-5 mr-2" />
             Export PDF
           </button>
-          <button
-            onClick={handleAdd}
-            className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-          >
-            <PlusIcon className="h-5 w-5 mr-2" />
-            Nouveau projet
-          </button>
+          {isAdmin && (
+            <button
+              onClick={handleAdd}
+              className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+            >
+              <PlusIcon className="h-5 w-5 mr-2" />
+              Nouveau projet
+            </button>
+          )}
         </div>
       </div>
 
@@ -189,11 +193,41 @@ const Projects = () => {
             </div>
 
             {project.description && (
-              <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+              <p className="text-sm text-gray-600 mb-3 line-clamp-2">
                 {project.description}
               </p>
             )}
 
+            {/* Type badge + Budget */}
+            <div className="flex flex-wrap items-center gap-2 mb-3">
+              {project.type && (
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-50 text-indigo-700">
+                  {project.type}
+                </span>
+              )}
+              {project.budget && (
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-700">
+                  Budget: {Number(project.budget).toLocaleString('fr-FR')} MAD
+                </span>
+              )}
+            </div>
+
+            {/* Progress bar */}
+            <div className="mb-4">
+              <div className="flex justify-between text-xs text-gray-500 mb-1">
+                <span>Avancement</span>
+                <span className="font-semibold text-indigo-600">{project.progress ?? 0}%</span>
+              </div>
+              <div className="w-full bg-gray-100 rounded-full h-2">
+                <div
+                  className="h-2 rounded-full transition-all duration-500"
+                  style={{
+                    width: `${project.progress ?? 0}%`,
+                    backgroundColor: project.progress >= 100 ? '#10B981' : project.progress >= 50 ? '#4F46E5' : '#F59E0B',
+                  }}
+                />
+              </div>
+            </div>
             <div className="flex items-center justify-between text-sm text-gray-500 border-t pt-4">
               <div className="flex items-center space-x-4">
                 <div className="flex items-center">
@@ -206,18 +240,24 @@ const Projects = () => {
                 </div>
               </div>
               <div className="flex space-x-1">
-                <button
-                  onClick={() => handleEdit(project)}
-                  className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
-                >
-                  <PencilIcon className="h-4 w-4" />
-                </button>
-                <button
-                  onClick={() => handleDelete(project.id)}
-                  className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                >
-                  <TrashIcon className="h-4 w-4" />
-                </button>
+                {(isAdmin || isEmployee) && (
+                  <button
+                    onClick={() => handleEdit(project)}
+                    className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                    title="Modifier le projet"
+                  >
+                    <PencilIcon className="h-4 w-4" />
+                  </button>
+                )}
+                {isAdmin && (
+                  <button
+                    onClick={() => handleDelete(project.id)}
+                    className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    title="Supprimer le projet"
+                  >
+                    <TrashIcon className="h-4 w-4" />
+                  </button>
+                )}
               </div>
             </div>
           </div>

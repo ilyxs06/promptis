@@ -1,11 +1,3 @@
-<div style="border: 2px solid #0055A4; padding: 4px; margin-bottom: 40px; border-radius: 4px; background-color: white;">
-<div style="border: 1px solid #0055A4; padding: 40px; padding-bottom: 80px; position: relative; min-height: 1000px; border-radius: 2px;">
-
-<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0055A4; padding-bottom: 15px; margin-bottom: 30px;">
-<img src="file:///C:/Users/HP/Documents/OFPPT.png" height="50" alt="OFPPT"/>
-<img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" height="50" alt="PROMPTIS"/>
-</div>
-
 <div style="text-align: center; padding: 50px 0;">
 
 # ROYAUME DU MAROC
@@ -44,22 +36,7 @@
 
 </div>
 
-<div style="position: absolute; bottom: 30px; left: 40px; right: 40px; border-top: 2px solid #0055A4; padding-top: 15px; display: flex; justify-content: center; align-items: center; color: #555; font-family: sans-serif; font-size: 13px;">
-<span style="background: white; padding: 0 15px;">P a g e 1 | 13</span>
-</div>
-
-</div>
-</div>
-
 <div style="page-break-after: always;"></div>
-
-<div style="border: 2px solid #0055A4; padding: 4px; margin-bottom: 40px; border-radius: 4px; background-color: white;">
-<div style="border: 1px solid #0055A4; padding: 40px; padding-bottom: 80px; position: relative; min-height: 1000px; border-radius: 2px;">
-
-<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0055A4; padding-bottom: 15px; margin-bottom: 30px;">
-<img src="file:///C:/Users/HP/Documents/OFPPT.png" height="50" alt="OFPPT"/>
-<img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" height="50" alt="PROMPTIS"/>
-</div>
 
 ---
 
@@ -77,22 +54,7 @@ Mes sincères remerciements vont à :
 
 Ce stage a été une expérience formatrice qui m'a permis de mettre en pratique mes connaissances théoriques et de découvrir le monde professionnel du développement web.
 
-<div style="position: absolute; bottom: 30px; left: 40px; right: 40px; border-top: 2px solid #0055A4; padding-top: 15px; display: flex; justify-content: center; align-items: center; color: #555; font-family: sans-serif; font-size: 13px;">
-<span style="background: white; padding: 0 15px;">P a g e 2 | 13</span>
-</div>
-
-</div>
-</div>
-
 <div style="page-break-after: always;"></div>
-
-<div style="border: 2px solid #0055A4; padding: 4px; margin-bottom: 40px; border-radius: 4px; background-color: white;">
-<div style="border: 1px solid #0055A4; padding: 40px; padding-bottom: 80px; position: relative; min-height: 1000px; border-radius: 2px;">
-
-<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0055A4; padding-bottom: 15px; margin-bottom: 30px;">
-<img src="file:///C:/Users/HP/Documents/OFPPT.png" height="50" alt="OFPPT"/>
-<img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" height="50" alt="PROMPTIS"/>
-</div>
 
 ---
 
@@ -126,22 +88,7 @@ Ce stage a été une expérience formatrice qui m'a permis de mettre en pratique
     - A. Documentation API
     - B. Guide d'installation
 
-<div style="position: absolute; bottom: 30px; left: 40px; right: 40px; border-top: 2px solid #0055A4; padding-top: 15px; display: flex; justify-content: center; align-items: center; color: #555; font-family: sans-serif; font-size: 13px;">
-<span style="background: white; padding: 0 15px;">P a g e 3 | 13</span>
-</div>
-
-</div>
-</div>
-
 <div style="page-break-after: always;"></div>
-
-<div style="border: 2px solid #0055A4; padding: 4px; margin-bottom: 40px; border-radius: 4px; background-color: white;">
-<div style="border: 1px solid #0055A4; padding: 40px; padding-bottom: 80px; position: relative; min-height: 1000px; border-radius: 2px;">
-
-<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0055A4; padding-bottom: 15px; margin-bottom: 30px;">
-<img src="file:///C:/Users/HP/Documents/OFPPT.png" height="50" alt="OFPPT"/>
-<img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" height="50" alt="PROMPTIS"/>
-</div>
 
 ---
 
@@ -155,22 +102,7 @@ Ce projet répond à un besoin réel de l'entreprise : centraliser la gestion de
 
 Le présent rapport détaille les différentes étapes de réalisation de ce projet, depuis l'analyse des besoins jusqu'à la mise en œuvre technique, en passant par la conception et les choix technologiques effectués.
 
-<div style="position: absolute; bottom: 30px; left: 40px; right: 40px; border-top: 2px solid #0055A4; padding-top: 15px; display: flex; justify-content: center; align-items: center; color: #555; font-family: sans-serif; font-size: 13px;">
-<span style="background: white; padding: 0 15px;">P a g e 4 | 13</span>
-</div>
-
-</div>
-</div>
-
 <div style="page-break-after: always;"></div>
-
-<div style="border: 2px solid #0055A4; padding: 4px; margin-bottom: 40px; border-radius: 4px; background-color: white;">
-<div style="border: 1px solid #0055A4; padding: 40px; padding-bottom: 80px; position: relative; min-height: 1000px; border-radius: 2px;">
-
-<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0055A4; padding-bottom: 15px; margin-bottom: 30px;">
-<img src="file:///C:/Users/HP/Documents/OFPPT.png" height="50" alt="OFPPT"/>
-<img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" height="50" alt="PROMPTIS"/>
-</div>
 
 ---
 
@@ -209,22 +141,7 @@ L'entreprise est structurée autour de plusieurs pôles de compétences :
 - Équipe design (UX/UI designers)
 - Direction et gestion de projet
 
-<div style="position: absolute; bottom: 30px; left: 40px; right: 40px; border-top: 2px solid #0055A4; padding-top: 15px; display: flex; justify-content: center; align-items: center; color: #555; font-family: sans-serif; font-size: 13px;">
-<span style="background: white; padding: 0 15px;">P a g e 5 | 13</span>
-</div>
-
-</div>
-</div>
-
 <div style="page-break-after: always;"></div>
-
-<div style="border: 2px solid #0055A4; padding: 4px; margin-bottom: 40px; border-radius: 4px; background-color: white;">
-<div style="border: 1px solid #0055A4; padding: 40px; padding-bottom: 80px; position: relative; min-height: 1000px; border-radius: 2px;">
-
-<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0055A4; padding-bottom: 15px; margin-bottom: 30px;">
-<img src="file:///C:/Users/HP/Documents/OFPPT.png" height="50" alt="OFPPT"/>
-<img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" height="50" alt="PROMPTIS"/>
-</div>
 
 ---
 
@@ -264,22 +181,7 @@ Le projet **Promptis Manager** vise à :
 | 5 | **Gestion Documentaire** | Partager des fichiers de manière sécurisée |
 | 6 | **Notifications** | Alerter les utilisateurs des événements importants |
 
-<div style="position: absolute; bottom: 30px; left: 40px; right: 40px; border-top: 2px solid #0055A4; padding-top: 15px; display: flex; justify-content: center; align-items: center; color: #555; font-family: sans-serif; font-size: 13px;">
-<span style="background: white; padding: 0 15px;">P a g e 6 | 13</span>
-</div>
-
-</div>
-</div>
-
 <div style="page-break-after: always;"></div>
-
-<div style="border: 2px solid #0055A4; padding: 4px; margin-bottom: 40px; border-radius: 4px; background-color: white;">
-<div style="border: 1px solid #0055A4; padding: 40px; padding-bottom: 80px; position: relative; min-height: 1000px; border-radius: 2px;">
-
-<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0055A4; padding-bottom: 15px; margin-bottom: 30px;">
-<img src="file:///C:/Users/HP/Documents/OFPPT.png" height="50" alt="OFPPT"/>
-<img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" height="50" alt="PROMPTIS"/>
-</div>
 
 ---
 
@@ -361,22 +263,7 @@ Le système identifie trois types d'utilisateurs avec des permissions différent
 **Statuts des tickets :** `ouvert`, `en_cours`, `resolu`, `ferme`
 **Priorités des tickets :** `basse`, `moyenne`, `haute`, `urgente`
 
-<div style="position: absolute; bottom: 30px; left: 40px; right: 40px; border-top: 2px solid #0055A4; padding-top: 15px; display: flex; justify-content: center; align-items: center; color: #555; font-family: sans-serif; font-size: 13px;">
-<span style="background: white; padding: 0 15px;">P a g e 7 | 13</span>
-</div>
-
-</div>
-</div>
-
 <div style="page-break-after: always;"></div>
-
-<div style="border: 2px solid #0055A4; padding: 4px; margin-bottom: 40px; border-radius: 4px; background-color: white;">
-<div style="border: 1px solid #0055A4; padding: 40px; padding-bottom: 80px; position: relative; min-height: 1000px; border-radius: 2px;">
-
-<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0055A4; padding-bottom: 15px; margin-bottom: 30px;">
-<img src="file:///C:/Users/HP/Documents/OFPPT.png" height="50" alt="OFPPT"/>
-<img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" height="50" alt="PROMPTIS"/>
-</div>
 
 ---
 
@@ -457,22 +344,7 @@ Le système identifie trois types d'utilisateurs avec des permissions différent
 | **Chrome DevTools** | Débogage frontend |
 | **MySQL Workbench** | Administration base de données |
 
-<div style="position: absolute; bottom: 30px; left: 40px; right: 40px; border-top: 2px solid #0055A4; padding-top: 15px; display: flex; justify-content: center; align-items: center; color: #555; font-family: sans-serif; font-size: 13px;">
-<span style="background: white; padding: 0 15px;">P a g e 8 | 13</span>
-</div>
-
-</div>
-</div>
-
 <div style="page-break-after: always;"></div>
-
-<div style="border: 2px solid #0055A4; padding: 4px; margin-bottom: 40px; border-radius: 4px; background-color: white;">
-<div style="border: 1px solid #0055A4; padding: 40px; padding-bottom: 80px; position: relative; min-height: 1000px; border-radius: 2px;">
-
-<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0055A4; padding-bottom: 15px; margin-bottom: 30px;">
-<img src="file:///C:/Users/HP/Documents/OFPPT.png" height="50" alt="OFPPT"/>
-<img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" height="50" alt="PROMPTIS"/>
-</div>
 
 ---
 
@@ -639,22 +511,7 @@ backend/
 *Description : Suivi d'un projet, barre de progression et équipe.*
 ![Capture Projet](./chemin/vers/image_projet.png)
 
-<div style="position: absolute; bottom: 30px; left: 40px; right: 40px; border-top: 2px solid #0055A4; padding-top: 15px; display: flex; justify-content: center; align-items: center; color: #555; font-family: sans-serif; font-size: 13px;">
-<span style="background: white; padding: 0 15px;">P a g e 9 | 13</span>
-</div>
-
-</div>
-</div>
-
 <div style="page-break-after: always;"></div>
-
-<div style="border: 2px solid #0055A4; padding: 4px; margin-bottom: 40px; border-radius: 4px; background-color: white;">
-<div style="border: 1px solid #0055A4; padding: 40px; padding-bottom: 80px; position: relative; min-height: 1000px; border-radius: 2px;">
-
-<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0055A4; padding-bottom: 15px; margin-bottom: 30px;">
-<img src="file:///C:/Users/HP/Documents/OFPPT.png" height="50" alt="OFPPT"/>
-<img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" height="50" alt="PROMPTIS"/>
-</div>
 
 ---
 
@@ -680,22 +537,7 @@ Durant le développement de ce projet, plusieurs défis techniques ont été ren
 - **Documenter les API** pour faciliter le développement frontend
 - **Utiliser Git** pour revenir facilement en arrière en cas de problème
 
-<div style="position: absolute; bottom: 30px; left: 40px; right: 40px; border-top: 2px solid #0055A4; padding-top: 15px; display: flex; justify-content: center; align-items: center; color: #555; font-family: sans-serif; font-size: 13px;">
-<span style="background: white; padding: 0 15px;">P a g e 10 | 13</span>
-</div>
-
-</div>
-</div>
-
 <div style="page-break-after: always;"></div>
-
-<div style="border: 2px solid #0055A4; padding: 4px; margin-bottom: 40px; border-radius: 4px; background-color: white;">
-<div style="border: 1px solid #0055A4; padding: 40px; padding-bottom: 80px; position: relative; min-height: 1000px; border-radius: 2px;">
-
-<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0055A4; padding-bottom: 15px; margin-bottom: 30px;">
-<img src="file:///C:/Users/HP/Documents/OFPPT.png" height="50" alt="OFPPT"/>
-<img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" height="50" alt="PROMPTIS"/>
-</div>
 
 ---
 
@@ -740,22 +582,7 @@ Au-delà des compétences techniques, ce stage m'a également permis de dévelop
 - **Documentation** : Rédaction technique claire et structurée
 - **Communication** : Présentation du travail réalisé
 
-<div style="position: absolute; bottom: 30px; left: 40px; right: 40px; border-top: 2px solid #0055A4; padding-top: 15px; display: flex; justify-content: center; align-items: center; color: #555; font-family: sans-serif; font-size: 13px;">
-<span style="background: white; padding: 0 15px;">P a g e 11 | 13</span>
-</div>
-
-</div>
-</div>
-
 <div style="page-break-after: always;"></div>
-
-<div style="border: 2px solid #0055A4; padding: 4px; margin-bottom: 40px; border-radius: 4px; background-color: white;">
-<div style="border: 1px solid #0055A4; padding: 40px; padding-bottom: 80px; position: relative; min-height: 1000px; border-radius: 2px;">
-
-<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0055A4; padding-bottom: 15px; margin-bottom: 30px;">
-<img src="file:///C:/Users/HP/Documents/OFPPT.png" height="50" alt="OFPPT"/>
-<img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" height="50" alt="PROMPTIS"/>
-</div>
 
 ---
 
@@ -794,22 +621,7 @@ Le projet peut évoluer avec les fonctionnalités suivantes :
 
 Je tiens à remercier encore une fois **Promptis** pour cette opportunité qui m'a permis de consolider mes compétences et de découvrir le monde professionnel du développement web. Cette expérience constitue une base solide pour ma future carrière en tant que développeur Full Stack.
 
-<div style="position: absolute; bottom: 30px; left: 40px; right: 40px; border-top: 2px solid #0055A4; padding-top: 15px; display: flex; justify-content: center; align-items: center; color: #555; font-family: sans-serif; font-size: 13px;">
-<span style="background: white; padding: 0 15px;">P a g e 12 | 13</span>
-</div>
-
-</div>
-</div>
-
 <div style="page-break-after: always;"></div>
-
-<div style="border: 2px solid #0055A4; padding: 4px; margin-bottom: 40px; border-radius: 4px; background-color: white;">
-<div style="border: 1px solid #0055A4; padding: 40px; padding-bottom: 80px; position: relative; min-height: 1000px; border-radius: 2px;">
-
-<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0055A4; padding-bottom: 15px; margin-bottom: 30px;">
-<img src="file:///C:/Users/HP/Documents/OFPPT.png" height="50" alt="OFPPT"/>
-<img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" height="50" alt="PROMPTIS"/>
-</div>
 
 ---
 
@@ -969,10 +781,3 @@ npm run dev
 *Document réalisé par Mohammed Ilyas Salmy*  
 *OFPPT - Développement Digital Full Stack*  
 *Février 2026*
-
-<div style="position: absolute; bottom: 30px; left: 40px; right: 40px; border-top: 2px solid #0055A4; padding-top: 15px; display: flex; justify-content: center; align-items: center; color: #555; font-family: sans-serif; font-size: 13px;">
-<span style="background: white; padding: 0 15px;">P a g e 13 | 13</span>
-</div>
-
-</div>
-</div>

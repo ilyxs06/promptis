@@ -28,12 +28,12 @@ class StatsController extends Controller
     {
         return response()->json([
             'totalProjects' => Project::count(),
-            'activeProjects' => Project::where('status', 'in_progress')->count(),
-            'completedProjects' => Project::where('status', 'completed')->count(),
+            'activeProjects' => Project::where('status', 'en_cours')->count(),
+            'completedProjects' => Project::where('status', 'termine')->count(),
             'totalEmployees' => Employee::count(),
             'totalClients' => Client::count(),
-            'openTickets' => Ticket::where('status', 'open')->count(),
-            'urgentTickets' => Ticket::where('priority', 'urgent')->count(),
+            'openTickets' => Ticket::where('status', 'ouvert')->count(),
+            'urgentTickets' => Ticket::where('priority', 'urgente')->count(),
         ]);
     }
 
@@ -45,13 +45,13 @@ class StatsController extends Controller
             'myProjects' => Project::whereHas('employees', function ($q) use ($employeeId) {
                 $q->where('employee_id', $employeeId);
             })->count(),
-            'activeProjects' => Project::where('status', 'in_progress')
+            'activeProjects' => Project::where('status', 'en_cours')
                 ->whereHas('employees', function ($q) use ($employeeId) {
                     $q->where('employee_id', $employeeId);
                 })->count(),
-            'assignedTickets' => Ticket::where('assigned_to', $employeeId)->count(),
-            'openTickets' => Ticket::where('assigned_to', $employeeId)
-                ->where('status', 'open')->count(),
+            'assignedTickets' => Ticket::where('employee_id', $employeeId)->count(),
+            'openTickets' => Ticket::where('employee_id', $employeeId)
+                ->where('status', 'ouvert')->count(),
         ]);
     }
 
@@ -62,12 +62,12 @@ class StatsController extends Controller
         return response()->json([
             'totalProjects' => Project::where('client_id', $clientId)->count(),
             'activeProjects' => Project::where('client_id', $clientId)
-                ->where('status', 'in_progress')->count(),
+                ->where('status', 'en_cours')->count(),
             'completedProjects' => Project::where('client_id', $clientId)
-                ->where('status', 'completed')->count(),
+                ->where('status', 'termine')->count(),
             'myTickets' => Ticket::where('client_id', $clientId)->count(),
             'openTickets' => Ticket::where('client_id', $clientId)
-                ->where('status', 'open')->count(),
+                ->where('status', 'ouvert')->count(),
         ]);
     }
 }

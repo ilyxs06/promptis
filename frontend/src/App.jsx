@@ -11,6 +11,7 @@ import Projects from './pages/Projects';
 import Tickets from './pages/Tickets';
 import Files from './pages/Files';
 import Profile from './pages/Profile';
+import Search from './pages/Search';
 import LandingPage from './pages/LandingPage';
 import './index.css';
 
@@ -83,6 +84,7 @@ function AppRoutes() {
         <Route path="/tickets" element={<Tickets />} />
         <Route path="/files" element={<Files />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/search" element={<Search />} />
       </Route>
 
       {/* Route par défaut - Landing Page */}
