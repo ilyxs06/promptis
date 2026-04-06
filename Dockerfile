@@ -22,13 +22,11 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
-# Install PHP dependencies first (better layer cache)
-COPY backend/composer.json backend/composer.lock* ./
+# Copy backend app source before composer scripts (artisan package:discover)
+COPY backend/ /var/www
+
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN composer install --no-dev --optimize-autoloader --no-interaction
-
-# Copy backend app source
-COPY backend/ /var/www
 
 # Nginx + startup script
 COPY backend/docker/nginx.conf /etc/nginx/sites-enabled/default
