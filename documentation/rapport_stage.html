@@ -1,0 +1,1916 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rapport de Stage – Promptis Manager</title>
+  <style>
+    /* ── RESET & BASE ─────────────────────────────── */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 11pt;
+      line-height: 1.65;
+      color: #1a1a2e;
+      background: #fff;
+    }
+
+    /* ── COLOURS ──────────────────────────────────── */
+    :root {
+      --blue: #1a4b8c;
+      --cyan: #0099cc;
+      --lightbg: #eff6ff;
+      --border: #c8ddf5;
+    }
+
+    /* ── PAGE LAYOUT ──────────────────────────────── */
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto 20px;
+      padding: 20mm 22mm 20mm 22mm;
+      background: #fff;
+      box-shadow: 0 0 8px rgba(0, 0, 0, .15);
+      page-break-after: always;
+    }
+
+    .page:last-child {
+      page-break-after: auto;
+    }
+
+    /* ── HEADER BAR (appears on every content page) ─ */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 10px;
+      margin-bottom: 18px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .logo-placeholder {
+      width: 70px;
+      height: 40px;
+      border: 1.5px solid var(--border);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8pt;
+      color: #999;
+      font-style: italic;
+      background: #f9fafb;
+    }
+
+    /* ── COVER PAGE ───────────────────────────────── */
+    .cover {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .cover .logos {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 18px;
+    }
+
+    .cover .logo-placeholder {
+      width: 90px;
+      height: 55px;
+      font-size: 9pt;
+    }
+
+    .cover-divider {
+      width: 100%;
+      border: none;
+      border-top: 1.5px solid var(--border);
+      margin: 12px 0;
+    }
+
+    .cover-org {
+      color: var(--blue);
+      font-weight: bold;
+      font-size: 12pt;
+      margin-bottom: 2px;
+    }
+
+    .cover-inst {
+      font-size: 10.5pt;
+      color: #444;
+      margin-bottom: 12px;
+    }
+
+    .cover-label {
+      color: var(--blue);
+      font-weight: bold;
+      font-size: 11pt;
+      letter-spacing: .5px;
+      margin-bottom: 2px;
+    }
+
+    .cover-filiere {
+      font-size: 10pt;
+      color: #555;
+      margin-bottom: 30px;
+    }
+
+    .cover-title-box {
+      border: 2px solid var(--blue);
+      border-radius: 6px;
+      padding: 22px 40px;
+      margin: 18px 0;
+      width: 90%;
+    }
+
+    .cover-title-box h1 {
+      font-size: 28pt;
+      color: var(--blue);
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    .cover-subtitle {
+      font-size: 13pt;
+      color: #444;
+      margin-top: 8px;
+    }
+
+    .cover-info {
+      width: 90%;
+      border-collapse: collapse;
+      margin-top: 30px;
+      font-size: 10.5pt;
+    }
+
+    .cover-info td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cover-info td:first-child {
+      font-weight: bold;
+      color: var(--blue);
+      width: 40%;
+      text-align: right;
+      padding-right: 20px;
+    }
+
+    /* ── SECTION HEADINGS ─────────────────────────── */
+    h2 {
+      color: var(--blue);
+      font-size: 14pt;
+      margin-top: 28px;
+      margin-bottom: 12px;
+      padding-bottom: 5px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    h3 {
+      color: var(--blue);
+      font-size: 11.5pt;
+      margin-top: 20px;
+      margin-bottom: 8px;
+    }
+
+    h4 {
+      font-size: 10.5pt;
+      color: var(--blue);
+      margin-top: 14px;
+      margin-bottom: 5px;
+    }
+
+    /* ── PARAGRAPHS & LISTS ───────────────────────── */
+    p {
+      margin-bottom: 9px;
+    }
+
+    ul,
+    ol {
+      padding-left: 22px;
+      margin-bottom: 10px;
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+
+    strong {
+      color: var(--blue);
+    }
+
+    /* ── INFO BOX (replaces simple info tables) ───── */
+    .info-box {
+      background: var(--lightbg);
+      border-left: 4px solid var(--cyan);
+      border-radius: 4px;
+      padding: 12px 16px;
+      margin: 12px 0;
+      font-size: 10.5pt;
+    }
+
+    .info-box .row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 3px;
+    }
+
+    .info-box .label {
+      font-weight: bold;
+      color: var(--blue);
+      min-width: 130px;
+    }
+
+    /* ── HIGHLIGHT BOX ────────────────────────────── */
+    .highlight-box {
+      background: var(--lightbg);
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      padding: 14px 20px;
+      text-align: center;
+      font-weight: bold;
+      color: var(--blue);
+      font-size: 11pt;
+      margin: 14px 0;
+    }
+
+    /* ── TABLES ───────────────────────────────────── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 10pt;
+      table-layout: fixed;
+      word-wrap: break-word;
+    }
+
+    th {
+      background: var(--blue);
+      color: #fff;
+      padding: 8px 10px;
+      text-align: left;
+      font-weight: bold;
+    }
+
+    td {
+      padding: 7px 10px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td {
+      background: var(--lightbg);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* ── IMAGE PLACEHOLDER ────────────────────────── */
+    .img-placeholder {
+      border: 2px dashed var(--cyan);
+      border-radius: 6px;
+      background: #f0f9ff;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 14px 0;
+      padding: 20px;
+      text-align: center;
+      color: var(--cyan);
+    }
+
+    .img-placeholder .icon {
+      font-size: 28pt;
+      margin-bottom: 8px;
+    }
+
+    .img-placeholder .label {
+      font-weight: bold;
+      font-size: 11pt;
+    }
+
+    .img-placeholder .hint {
+      font-size: 9pt;
+      color: #888;
+      margin-top: 4px;
+    }
+
+    .img-caption {
+      text-align: center;
+      font-size: 9.5pt;
+      color: #555;
+      font-style: italic;
+      margin-top: -6px;
+      margin-bottom: 12px;
+    }
+
+    .diagram-block {
+      break-inside: avoid;
+      page-break-inside: avoid;
+      margin: 10px 0 16px 0;
+    }
+
+    .diagram-img {
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      display: block;
+      margin: 12px auto;
+    }
+
+    /* ── CHECKLIST ────────────────────────────────── */
+    .checklist li {
+      list-style: none;
+      padding-left: 4px;
+    }
+
+    .checklist li::before {
+      content: "✓ ";
+      color: #16a34a;
+      font-weight: bold;
+    }
+
+    /* ── BADGE ────────────────────────────────────── */
+    .badge {
+      display: inline-block;
+      background: var(--lightbg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2px 10px;
+      font-size: 9pt;
+      margin: 2px;
+      color: var(--blue);
+    }
+
+    /* ── STATUS TABLE (conclusion) ────────────────── */
+    .status-table td:last-child {
+      color: #16a34a;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    /* ── TOC ──────────────────────────────────────── */
+    .toc {
+      font-size: 10.5pt;
+    }
+
+    .toc-h2 {
+      margin-top: 10px;
+      font-weight: bold;
+      color: var(--blue);
+    }
+
+    .toc-h3 {
+      margin-left: 20px;
+      color: #333;
+    }
+
+    .toc-row {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dotted #ccc;
+      padding: 3px 0;
+    }
+
+    /* ── FOOTER ───────────────────────────────────── */
+    .page-footer {
+      margin-top: 30px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+      font-size: 8.5pt;
+      color: #999;
+      text-align: center;
+    }
+
+    /* ── PRINT ────────────────────────────────────── */
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .page {
+        box-shadow: none;
+        margin: 0;
+        padding: 18mm 22mm 16mm 22mm;
+        page-break-after: always;
+        min-height: 0;
+      }
+
+      .img-placeholder {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      th {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      tr:nth-child(even) td {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .info-box {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .highlight-box {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      h2,
+      h3,
+      h4 {
+        page-break-after: avoid;
+      }
+
+      table {
+        page-break-inside: avoid;
+      }
+
+      .no-break {
+        page-break-inside: avoid;
+      }
+
+      .diagram-block {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      .diagram-img {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE 1 – COUVERTURE
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="cover">
+      <div class="logos">
+        <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+          style="height: 65px; width: auto; object-fit: contain;" />
+        <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+          style="height: 50px; width: auto; object-fit: contain;" />
+      </div>
+      <hr class="cover-divider" />
+      <p class="cover-org">ROYAUME DU MAROC</p>
+      <p class="cover-org">Office de la Formation Professionnelle et de la Promotion du Travail</p>
+      <p class="cover-inst">Institut Spécialisé de Technologie Appliquée</p>
+      <hr class="cover-divider" />
+      <p class="cover-label">RAPPORT DE STAGE DE FIN DE FORMATION</p>
+      <p class="cover-filiere">Filière : Développement Digital – Full Stack</p>
+
+      <div class="cover-title-box">
+        <h1>PROMPTIS MANAGER</h1>
+        <p class="cover-subtitle">Système de Gestion RH &amp; Portail Client</p>
+      </div>
+
+      <table class="cover-info">
+        <tr>
+          <td>Réalisé par</td>
+          <td>Mohammed Ilyas Salmy</td>
+        </tr>
+        <tr>
+          <td>Encadrant de l'entreprise </td>
+          <td>Reda Bounnar</td>
+        </tr>
+        <tr>
+          <td>Encadrant de l'école </td>
+          <td>Rabiaa Sabour</td>
+        </tr>
+        <tr>
+          <td>Période de stage</td>
+          <td>Janvier – Février 2026</td>
+        </tr>
+        <tr>
+          <td>Durée</td>
+          <td>5 semaines</td>
+        </tr>
+        <tr>
+          <td>Année de formation</td>
+          <td>2025 / 2026</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE 2 – DÉDICACE
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h2 style="text-align: center; border-bottom: none; margin-top: 100px;">Dédicace</h2>
+    <div style="font-style: italic; text-align: center; line-height: 2; margin-top: 50px; font-size: 12pt;">
+      <p>À mes chers parents,<br>
+        Pour tous les sacrifices qu'ils ont consentis pour mon éducation et ma réussite.<br>
+        Leur soutien inconditionnel et leurs prières ont été ma plus grande force.</p>
+
+      <p style="margin-top: 20px;">À toute ma famille,<br>
+        Pour leurs encouragements constants.</p>
+
+      <p style="margin-top: 20px;">À tous mes amis et collègues de promotion,<br>
+        Pour les moments de partage et d'entraide durant ces années de formation.</p>
+
+      <p style="margin-top: 40px; font-weight: bold;">Mohammed Ilyas Salmy</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE 3 – REMERCIEMENTS
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h2>Remerciements</h2>
+    <p>Je tiens à exprimer ma profonde gratitude envers toutes les personnes qui ont contribué à la réussite de ce stage
+      et à l'aboutissement de ce projet.</p>
+    <p><strong>L'équipe Promptis</strong> : Pour m'avoir accueilli au sein de leur entreprise et pour la confiance
+      qu'ils m'ont accordée en me confiant ce projet. Leur expertise en consulting IT et leur environnement de travail
+      professionnel m'ont permis d'acquérir une expérience précieuse.</p>
+    <p><strong>Mes formateurs à l'OFPPT</strong> : Pour leur enseignement de qualité tout au long de ma formation en
+      Développement Digital. Les compétences techniques transmises ont été essentielles pour mener à bien ce projet.</p>
+    <p><strong>Mes collègues de promotion</strong> : Pour l'entraide, les échanges enrichissants et le soutien mutuel
+      qui ont marqué ces années de formation.</p>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE 4 – SOMMAIRE
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h2>Sommaire</h2>
+    <div class="toc">
+      <div class="toc-row toc-h2"><span>1. Introduction</span><span>6</span></div>
+      <div class="toc-row toc-h2"><span>2. Présentation de l'Entreprise d'Accueil</span><span>6</span></div>
+      <div class="toc-row toc-h2"><span>3. Contexte et Problématique</span><span>7</span></div>
+
+      <div class="toc-row toc-h2"><span>4. Analyse et Conception</span><span>8</span></div>
+      <div class="toc-row toc-h3"><span>4.1 Spécifications fonctionnelles</span><span>8</span></div>
+      <div class="toc-row toc-h3"><span>4.2 Diagramme de cas d'utilisation</span><span>9</span></div>
+      <div class="toc-row toc-h3"><span>4.3 Diagramme de classes</span><span>10</span></div>
+      <div class="toc-row toc-h3"><span>4.4 Diagramme de séquence</span><span>11</span></div>
+      <div class="toc-row toc-h3"><span>4.5 Modèle Conceptuel de Données (MCD)</span><span>12</span></div>
+      <div class="toc-row toc-h3"><span>4.6 Modèle Logique de Données (MLD)</span><span>13</span></div>
+
+      <div class="toc-row toc-h2"><span>5. Choix Technologiques & Architecture</span><span>14</span></div>
+      <div class="toc-row toc-h3"><span>5.1 Stack technique Globale</span><span>14</span></div>
+      <div class="toc-row toc-h3"><span>5.2 Justification des choix Architecturaux</span><span>15</span></div>
+      <div class="toc-row toc-h3"><span>5.3 Architecture Applicative Détaillée</span><span>16</span></div>
+      <div class="toc-row toc-h3"><span>5.4 Architecture de Sécurité (RBAC & Tokens)</span><span>18</span></div>
+
+      <div class="toc-row toc-h2"><span>6. Réalisation Initiale & Développement</span><span>20</span></div>
+      <div class="toc-row toc-h3"><span>6.1 Structure du projet (React & Laravel)</span><span>20</span></div>
+      <div class="toc-row toc-h3"><span>6.2 Design System & Expérience Utilisateur (Soft-UI)</span><span>21</span></div>
+      <div class="toc-row toc-h3"><span>6.3 Module 1 : Authentification & Inscription</span><span>22</span></div>
+      <div class="toc-row toc-h3"><span>6.4 Module 2 : Tableau de Bord & Statistiques dynamiques</span><span>24</span>
+      </div>
+      <div class="toc-row toc-h3"><span>6.5 Module 3 : Gestion B2B (Clients, Profils)</span><span>26</span></div>
+      <div class="toc-row toc-h3"><span>6.6 Module 4 : Gestion des Opérations (Projets, Tickets)</span><span>28</span>
+      </div>
+      <div class="toc-row toc-h3"><span>6.7 Module 5 : Outils transverses (Fichiers, Recherche,
+          Notifications)</span><span>31</span></div>
+
+      <div class="toc-row toc-h2"><span>7. Difficultés Rencontrées et Solutions</span><span>34</span></div>
+
+      <div class="toc-row toc-h2"><span>8. Bilan et Compétences Acquises</span><span>35</span></div>
+
+      <div class="toc-row toc-h2"><span>9. Conclusion Générale et Perspectives</span><span>36</span></div>
+
+      <div class="toc-row toc-h2"><span>10. Annexes</span><span>37</span></div>
+      <div class="toc-row toc-h3"><span>Annexe A – Documentation API (Endpoints Clés)</span><span>37</span></div>
+      <div class="toc-row toc-h3"><span>Annexe B – Guide de lancement & Validation métier</span><span>39</span></div>
+      <div class="toc-row toc-h3"><span>Annexe C – Bibliographie</span><span>40</span></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE 5 – LISTES DES FIGURES & TABLEAUX
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h2>Liste des Figures</h2>
+    <ul>
+      <li><strong>Figure 1</strong> : Logo de l'entreprise Promptis</li>
+      <li><strong>Figure 2</strong> : Diagramme de cas d'utilisation global</li>
+      <li><strong>Figure 3</strong> : Diagramme de classes du système</li>
+      <li><strong>Figure 4</strong> : Diagramme de séquence - Connexion</li>
+      <li><strong>Figure 5</strong> : Diagramme de séquence - Création du ticket</li>
+      <li><strong>Figure 6</strong> : Modèle Conceptuel de Données (MCD)</li>
+      <li><strong>Figure 7</strong> : Flux de l'architecture API Backend</li>
+      <li><strong>Figure 8</strong> : Page de Connexion (Login)</li>
+      <li><strong>Figure 9</strong> : Tableau de bord côté administrateur</li>
+      <li><strong>Figure 10</strong> : Module de gestion des projets (Listes & stats)</li>
+      <li><strong>Figure 11</strong> : Vue Kanban/Liste des tickets support</li>
+      <li><strong>Figure 12</strong> : Gestionnaire de fichiers intégré</li>
+    </ul>
+
+    <h2>Liste des Tableaux</h2>
+    <ul>
+      <li><strong>Tableau 1</strong> : Outils et langages Frontend</li>
+      <li><strong>Tableau 2</strong> : Outils et frameworks Backend</li>
+      <li><strong>Tableau 3</strong> : Technologies Bases de données et DevOps</li>
+      <li><strong>Tableau 4</strong> : Difficultés rencontrées et solutions apportées</li>
+      <li><strong>Tableau 5</strong> : Bilan des connaissances acquises</li>
+      <li><strong>Tableau 6</strong> : API de gestion des utilisateurs et rôles</li>
+      <li><strong>Tableau 7</strong> : API de gestion des tickets et des fichiers</li>
+    </ul>
+
+    <h2>Liste des Abréviations</h2>
+    <ul>
+      <li><strong>OFPPT</strong> : Office de la Formation Professionnelle et de la Promotion du Travail</li>
+      <li><strong>API</strong> : Application Programming Interface</li>
+      <li><strong>CRUD</strong> : Create, Read, Update, Delete</li>
+      <li><strong>MCD / MLD</strong> : Modèle Conceptuel de Données / Modèle Logique de Données</li>
+      <li><strong>RBAC</strong> : Role-Based Access Control</li>
+      <li><strong>SPA</strong> : Single Page Application</li>
+      <li><strong>UX / UI</strong> : User Experience / User Interface</li>
+      <li><strong>SQL</strong> : Structured Query Language</li>
+    </ul>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE 6 – INTRO + ENTREPRISE
+══════════════════════════════════════════════════ -->
+
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h2>1. Introduction</h2>
+    <p>Dans le cadre de ma formation en <strong>Développement Digital – Full Stack</strong> à l'OFPPT, j'ai effectué un
+      stage de fin de formation d'une durée de <strong>5 semaines</strong> au sein de l'entreprise
+      <strong>Promptis</strong>, spécialisée dans le consulting IT à Casablanca, de janvier à février 2026.
+    </p>
+    <p>Ce stage m'a été confié avec un objectif clair : concevoir et développer un système complet répondant à un besoin
+      réel de l'entreprise. Le projet, baptisé <strong>Promptis Manager</strong>, est une application web full-stack de
+      gestion des ressources humaines et portail client.</p>
+    <p>Avant ce stage, Promptis gérait ses informations de manière dispersée : fichiers Excel, e-mails et outils
+      hétérogènes. L'objectif était de centraliser la gestion des employés, des clients, des projets et des tickets de
+      support dans une interface unique, moderne et sécurisée.</p>
+    <p>Ce rapport retrace les différentes étapes du projet, depuis l'analyse des besoins jusqu'à la livraison technique,
+      en passant par la conception architecturale et les choix technologiques effectués.</p>
+
+    <h2>2. Présentation de l'Entreprise d'Accueil</h2>
+
+    <h3>2.1 À propos de Promptis</h3>
+    <div class="info-box">
+      <div class="row"><span class="label">Nom</span><span>Promptis</span></div>
+      <div class="row"><span class="label">Secteur</span><span>IT Consulting Services</span></div>
+      <div class="row"><span class="label">Localisation</span><span>Casablanca, Maroc</span></div>
+      <div class="row"><span class="label">Type</span><span>Entreprise de services numériques (ESN)</span></div>
+      <div class="row"><span class="label">Site web</span><span>www.promptis.ma</span></div>
+    </div>
+    <p>Promptis est une entreprise de consulting IT basée à Casablanca qui accompagne ses clients dans leur
+      transformation digitale. Elle propose des solutions sur mesure, adaptées aux besoins spécifiques de chaque
+      organisation, en combinant expertise technique et approche conseil.</p>
+
+    <h3>2.2 Domaines d'Expertise</h3>
+    <ul>
+      <li><strong>Développement de logiciels</strong> : Applications sur mesure adaptées aux besoins métier</li>
+      <li><strong>Data Engineering &amp; Analytics</strong> : Solutions de gestion, traitement et analyse de données
+      </li>
+      <li><strong>Solutions Web &amp; E-Commerce</strong> : Sites web, plateformes e-commerce, applications web
+        progressives</li>
+      <li><strong>Infrastructure Cloud &amp; DevOps</strong> : Migration cloud, automatisation des déploiements, CI/CD
+      </li>
+      <li><strong>Design UX/UI</strong> : Conception d'interfaces utilisateur modernes et accessibles</li>
+    </ul>
+
+    <h3>2.3 Organisation</h3>
+    <p>L'entreprise est structurée autour de plusieurs pôles de compétences : une équipe de développement (full-stack,
+      front-end, back-end), une équipe data (data engineers, data analysts), une équipe infrastructure (DevOps,
+      administrateurs système), une équipe design (UX/UI), et une direction de gestion de projet.</p>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE 5 – CONTEXTE & PROBLÉMATIQUE
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h2>3. Contexte et Problématique</h2>
+
+    <h3>3.1 Contexte du Projet</h3>
+    <p>En tant qu'entreprise de consulting IT, Promptis gère quotidiennement un ensemble d'entités interdépendantes :
+      des équipes d'employés, un portefeuille de clients, des projets en cours et un flux constant de demandes de
+      support. Jusqu'au lancement de ce projet, ces informations étaient gérées de manière fragmentée — fichiers Excel,
+      e-mails et outils non intégrés — rendant le suivi difficile, chronophage et propice aux erreurs.</p>
+
+    <h3>3.2 Problématique</h3>
+    <div class="highlight-box">
+      Comment centraliser et optimiser la gestion des ressources humaines, des projets clients et du support technique
+      dans un outil unique, accessible et sécurisé ?
+    </div>
+    <p><strong>Principaux défis identifiés :</strong></p>
+    <ul>
+      <li>Absence de vision globale sur l'activité de l'entreprise</li>
+      <li>Difficulté à suivre les affectations et compétences des employés sur les projets</li>
+      <li>Manque de centralisation des livrables et fichiers par projet</li>
+      <li>Gestion des tickets de support non structurée, sans priorités ni traçabilité</li>
+      <li>Besoin de contrôle d'accès granulaire selon les rôles (admin, employé, client)</li>
+    </ul>
+
+    <h3>3.3 Objectifs du Projet</h3>
+    <table>
+      <colgroup>
+        <col style="width:8%">
+        <col style="width:28%">
+        <col style="width:64%">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Objectif</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Gestion RH</td>
+          <td>Gérer les employés, leurs compétences et affectations aux projets</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Gestion de Projets</td>
+          <td>Suivre les projets clients avec progression en temps réel</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Portail Client</td>
+          <td>Permettre aux clients de suivre leurs projets et créer des tickets</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Système de Tickets</td>
+          <td>Centraliser et prioriser les demandes de support technique</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Gestion Documentaire</td>
+          <td>Partager et télécharger des fichiers de manière sécurisée</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>Notifications</td>
+          <td>Alerter les utilisateurs en temps réel sur les événements importants</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE 6 – ANALYSE & CONCEPTION
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h2>4. Analyse et Conception</h2>
+
+    <h3>4.1 Spécifications Fonctionnelles</h3>
+
+    <h4>4.1.1 Acteurs du Système</h4>
+    <p>Le système identifie trois types d'utilisateurs avec des permissions différenciées :</p>
+    <table>
+      <colgroup>
+        <col style="width:22%">
+        <col style="width:22%">
+        <col style="width:56%">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Acteur</th>
+          <th>Rôle</th>
+          <th>Permissions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Administrateur</td>
+          <td>Gestionnaire Promptis</td>
+          <td>Accès complet : CRUD sur employés, clients, projets, tickets et fichiers</td>
+        </tr>
+        <tr>
+          <td>Employé</td>
+          <td>Membre de l'équipe</td>
+          <td>Consultation projets assignés, gestion tickets assignés, accès fichiers</td>
+        </tr>
+        <tr>
+          <td>Client</td>
+          <td>Client externe</td>
+          <td>Consultation de ses projets, création tickets, téléchargement fichiers</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>4.1.2 Fonctionnalités par Module</h4>
+    <p><strong>Module Authentification & Sécurité :</strong> connexion sécurisée par token (Laravel Sanctum), protection
+      des routes et implémentation d'un <strong>RBAC</strong> (Role-Based Access Control) strict garantissant que les
+      clients, employés et administrateurs n'accèdent qu'aux interfaces et actions autorisées.</p>
+    <p><strong>Recherche Globale (Global Search) :</strong> moteur de recherche transversal intégré à la barre de
+      navigation permettant la découverte instantanée et le filtrage des projets, tickets et clients de façon fluide.
+    </p>
+    <p><strong>Module Employés & Clients :</strong> CRUD complet, gestion des compétences techniques, association
+      d'entités, entièrement sécurisé par les niveaux de permissions.</p>
+    <p><strong>Module Projets :</strong> création avec sélection du client et assignation d'employés, barre de
+      progression visuelle (0–100%) modifiable contextuellement, filtrage avancé (statut, client, type, période).</p>
+    <p><strong>Module Tickets de Support :</strong> système de tickets liés au projet avec workflow colorimétrique
+      (Ouvert → En cours → Résolu → Fermé), intégration de niveaux de priorités et suivi via commentaires.</p>
+    <p><strong>Module Fichiers :</strong> plateforme de dépôt et téléchargement (upload) par projet, rendu professionnel
+      par assignation automatique d'icônes SVG selon l'extension des livrables.</p>
+    <p><strong>Module Notifications :</strong> alertes de tâches urgentes gérées via polling asynchrone (30s), dropdown
+      interactif permettant de marquer/purger les notifications sans rechargement.</p>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE 7 – DIAGRAMMES UML
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h3>4.2 Diagramme de Cas d'Utilisation</h3>
+    <p>Le diagramme ci-dessous illustre les interactions entre les trois acteurs du système (Administrateur, Employé,
+      Client) et les fonctionnalités auxquelles ils ont accès.</p>
+
+    <div class="diagram-block">
+      <img class="diagram-img" src="c:\Users\HP\Downloads\Diagram_Promptis\UseCaseDiagram_Promptis.drawio.png"
+        alt="Diagramme de cas d'utilisation" />
+      <p class="img-caption">Figure 1 – Diagramme de cas d'utilisation du système</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE 8 – DIAGRAMME DE CLASSES
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h3>4.3 Diagramme de Classes</h3>
+    <p>Ce diagramme présente les principales entités du domaine métier, leurs attributs, leurs opérations et les
+      cardinalités entre classes.</p>
+
+    <div class="diagram-block">
+      <img class="diagram-img" src="c:\Users\HP\Downloads\Diagram_Promptis\DiagrammeClasses_Promptis_fixed.drawio.png"
+        alt="Diagramme de classes" />
+      <p class="img-caption">Figure 2 – Diagramme de classes de Promptis Manager</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE 9 – DIAGRAMME DE SÉQUENCE
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h3>4.4 Diagramme de Séquence</h3>
+    <p>Le diagramme de séquence décrit les échanges temporels entre le frontend React, les contrôleurs Laravel, la base
+      MySQL et les acteurs (Client, Admin, Employé).</p>
+
+    <div class="diagram-block">
+      <img class="diagram-img" src="c:\Users\HP\Downloads\Diagram_Promptis\DiagrammeSequence_Promptis.drawio.png"
+        alt="Diagramme de séquence" />
+      <p class="img-caption">Figure 3 – Diagramme de séquence</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE 10 – MCD
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h3>4.5 Modèle Conceptuel de Données (MCD)</h3>
+    <p>Le MCD formalise les entités métier indépendamment de l'implémentation technique et met en évidence les
+      associations clés entre utilisateurs, projets, tickets et fichiers.</p>
+
+    <img src="c:\Users\HP\Downloads\Diagram_Promptis\MCD_Promptis.drawio.png" alt="Modèle Conceptuel de Données (MCD)"
+      style="width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 14px 0;" />
+    <p class="img-caption">Figure 4 – Modèle Conceptuel de Données</p>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE 11 – MLD
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h3>4.6 Modèle Logique de Données (MLD)</h3>
+    <p>Le MLD traduit le MCD en schéma relationnel prêt à être implémenté. La base de données
+      <strong>promptis_manager</strong> contient 9 tables : <em>users, employees, clients, projects, project_employee,
+        tickets, ticket_comments, files, notifications</em>.
+    </p>
+
+    <img src="c:\Users\HP\Downloads\Diagram_Promptis\MLD_Promptis.drawio.png" alt="Modèle Logique de Données (MLD)"
+      style="width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 14px 0;" />
+    <p class="img-caption">Figure 5 – Modèle Logique de Données</p>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE 15 – STACK TECHNIQUE (PARTIE III)
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h2>5. Choix Technologiques & Architecture</h2>
+    <h3>5.1 Stack technique Globale</h3>
+    <p>La conception de <strong>Promptis Manager</strong> repose sur une architecture moderne de type Single Page
+      Application (SPA) en isolant parfaitement le front-end du back-end. Cette séparation garantit une flexibilité
+      technique optimale, des performances accrues et une maintenabilité simplifiée.</p>
+
+    <div class="highlight-box">
+      Approche adoptée : API RESTful (Backend) + Client SPA réactif (Frontend)
+    </div>
+
+    <h4>Couche Frontend (Interface Client)</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Technologie</th>
+          <th>Version</th>
+          <th>Rôle principal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>React.js</strong></td>
+          <td>18.x</td>
+          <td>Création de composants UI interactifs et réutilisables</td>
+        </tr>
+        <tr>
+          <td><strong>Vite.js</strong></td>
+          <td>5.x</td>
+          <td>Outil de build ultra-rapide avec Hot Module Replacement</td>
+        </tr>
+        <tr>
+          <td><strong>Tailwind CSS</strong></td>
+          <td>3.x</td>
+          <td>Stylisation atomique rapide (Soft-UI) sans fichiers CSS monolithiques</td>
+        </tr>
+        <tr>
+          <td><strong>Axios</strong></td>
+          <td>1.x</td>
+          <td>Client HTTP pour la communication fluide avec l'API REST</td>
+        </tr>
+        <tr>
+          <td><strong>React Router DOM</strong></td>
+          <td>6.x</td>
+          <td>Navigation côté client sans rechargement de page</td>
+        </tr>
+        <tr>
+          <td><strong>Recharts</strong></td>
+          <td>2.x</td>
+          <td>Génération de graphiques SVG interactifs pour le Dashboard</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>Couche Backend (Logique Serveur & API)</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Technologie</th>
+          <th>Version</th>
+          <th>Rôle principal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Laravel</strong></td>
+          <td>11.x</td>
+          <td>Framework MVC PHP servant les endpoints métiers et garantissant la sécurité</td>
+        </tr>
+        <tr>
+          <td><strong>PHP</strong></td>
+          <td>8.2</td>
+          <td>Langage serveur robuste, typé et orienté objet</td>
+        </tr>
+        <tr>
+          <td><strong>Laravel Sanctum</strong></td>
+          <td>3.x</td>
+          <td>Système d'authentification par Tokens, léger et sécurisé pour API</td>
+        </tr>
+        <tr>
+          <td><strong>Eloquent ORM</strong></td>
+          <td>Intégré</td>
+          <td>Mappage Objet-Relationnel pour interagir avec la base de données</td>
+        </tr>
+        <tr>
+          <td><strong>MySQL</strong></td>
+          <td>8.x</td>
+          <td>Système de gestion de base de données relationnelle puissant</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>Outils transverses & DevOps</h4>
+    <p>Le flux de travail a été structuré autour de : <strong>Git & GitHub</strong> pour le versionnage distribué du
+      code ; <strong>Postman</strong> pour le test et le mocking indépendant des routes API avant intégration ; et
+      <strong>NPM / Composer</strong> pour la gestion fine des dépendances des deux écosystèmes.
+    </p>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE 16 – JUSTIFICATION DES CHOIX
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h3>5.2 Justification des choix Architecturaux</h3>
+    <p>Une étape fondamentale d'ingénierie consistait à justifier nos choix face à d'autres alternatives populaires sur
+      le marché. Aucun framework n'a été choisi par hasard ; ils répondent à des problématiques précises du cahier des
+      charges de Promptis.</p>
+
+    <div class="info-box" style="margin-top: 20px;">
+      <h4 style="margin: 0 0 10px 0; color: var(--blue);">1. Pourquoi React au lieu de Vue.js ou Angular ?</h4>
+      <p>Bien que Vue.js soit natifs à l'écosystème Laravel (via Inertia.js), le choix s'est porté sur React en raison
+        de son immense écosystème de librairies tierces (notamment Recharts pour nos tableaux de bord) et de son modèle
+        de réconciliation via le Virtual DOM, crucial pour une SPA manipulant des centaines de variables dynamiques
+        (tickets, états d'avancement). De plus, React favorise une approche 100% découplée de l'API.</p>
+    </div>
+
+    <div class="info-box" style="margin-top: 15px;">
+      <h4 style="margin: 0 0 10px 0; color: var(--blue);">2. Pourquoi Laravel au lieu de Node.js (Express/Nest) ?</h4>
+      <p>Laravel (PHP 8) a été présélectionné pour sa maturité prodigieuse sur les aspects backend conventionnels. Son
+        ORM Eloquent gère les relations de bases de données avec une syntaxe hyper-expressive, et son écosystème natif
+        de sécurité embarque d'office la protection contre les injections SQL, XSS, et inclut une validation de requêtes
+        très stricte (FormRequests). Pour une plateforme B2B manipulant des données clients sensibles, Laravel garantit
+        une fiabilité immédiate.</p>
+    </div>
+
+    <div class="info-box" style="margin-top: 15px;">
+      <h4 style="margin: 0 0 10px 0; color: var(--blue);">3. Pourquoi Sanctum au lieu de JWT (JSON Web Tokens) ?</h4>
+      <p>Bien que JWT soit un standard, son implémentation implique une gestion complexe de la révocation des tokens.
+        Laravel Sanctum fonctionne sur un principe de <em>Personal Access Tokens</em> stockés en base, permettant à un
+        administrateur Promptis de révoquer immédiatement l'accès d'un compte compromis d'un simple clic. C'est une
+        obligation sécuritaire primordiale dans notre contexte PME.</p>
+    </div>
+
+    <div class="info-box" style="margin-top: 15px;">
+      <h4 style="margin: 0 0 10px 0; color: var(--blue);">4. Pourquoi Tailwind CSS au lieu de Bootstrap ?</h4>
+      <p>Bootstrap impose un langage de design très reconnaissable et lourd. Tailwind permet de construire l'esthétique
+        exacte du <strong>Soft-UI</strong> souhaitée, sans jamais quitter le fichier du composant React. Le compilateur
+        de Tailwind (JIT) garantit que seuls les styles réellement utilisés seront expédiés en production (CSS &lt;
+        20ko).</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE 17 – ARCHITECTURE APPLICATIVE
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h3>5.3 Architecture Applicative Détaillée</h3>
+    <p>L'application utilise un modèle en couches (Layered Architecture). Le cycle de vie d'une donnée, depuis
+      l'interaction de l'utilisateur jusqu'à sa sauvegarde en base, suit un cheminement immuable garantissant la
+      traçabilité des opérations.</p>
+
+    <div class="diagram-block">
+      <div
+        style="border: 1px solid var(--border); border-radius: 8px; padding: 20px; background: #fafcff; text-align: center;">
+        <h4 style="margin-top: 0;">Flux Applicatif Global (Data Flow)</h4>
+        <div style="font-family: monospace; font-size: 10pt; color: #333; line-height: 2;">
+          [ USER BROWSER ] <br>
+          ↓ <em>(1) Clic & interaction React State</em><br>
+          [ REACT CONTEXT + COMPONENT ] <br>
+          ↓ <em>(2) Appel HTTP Axios Asynchrone (avec Token Sanctum)</em><br>
+          [ ROUTES API LARAVEL (api.php) ] <br>
+          ↓ <em>(3) Filtrage par Middlewares (Auth & RBAC)</em><br>
+          [ FORM REQUEST (Validation de données) ] <br>
+          ↓ <em>(4) Acheminement validé</em><br>
+          [ CONTROLLER PHP ] <br>
+          ↓ <em>(5) Logique Métier & Interaction ORM</em><br>
+          [ ELOQUENT ORM MODELS ] <br>
+          ↓ <em>(6) Requêtes SQL Protégées</em><br>
+          [ MYSQL DATABASE ]
+        </div>
+      </div>
+      <p class="img-caption" style="margin-top: 15px;">Figure 7 – Cycle de communication Client / Serveur / BDD</p>
+    </div>
+
+    <p>Cette approche apporte deux avantages majeurs :</p>
+    <ul>
+      <li><strong>Isolement des erreurs</strong> : Si l'API renvoie une <code>422 Unprocessable Entity</code> (ex: email
+        invalide), React capture l'erreur via Axios et la traduit en interface visuelle, sans que l'application globale
+        ne s'interrompe.</li>
+      <li><strong>Sécurité des injections</strong> : Le contrôleur MVC n'accepte jamais les requêtes "Raw". Les
+        <code>StoreRequest</code> de Laravel assainissent systématiquement chaque paramètre (strip_tags, type hints).
+      </li>
+    </ul>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE 18 – ARCHITECTURE DE SÉCURITÉ & RBAC
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h3>5.4 Architecture de Sécurité (RBAC & Tokens)</h3>
+    <p>Parce que Promptis Manager contient des documents stratégiques B2B, une architecture <strong>RBAC (Role-Based
+        Access Control)</strong> a été implémentée au cœur du système sur trois axes : <em>L'interface, le routeur API,
+        et la logique intra-entité</em>.</p>
+
+    <h4>Le Modèle de Permissions strict</h4>
+    <table class="status-table">
+      <thead>
+        <tr>
+          <th>Module</th>
+          <th>Administrateur (Promptis)</th>
+          <th>Employé</th>
+          <th>Client Externe</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Projets</strong></td>
+          <td>CRUD complet (tous)</td>
+          <td>Lecture seule (assignés uniquement)</td>
+          <td>Lecture seule (ses propres projets)</td>
+        </tr>
+        <tr>
+          <td><strong>Tickets</strong></td>
+          <td>CRUD complet, assignation</td>
+          <td>Modification d'état, réponse</td>
+          <td>Création, réponse</td>
+        </tr>
+        <tr>
+          <td><strong>Employés/Clients</strong></td>
+          <td>CRUD complet, gestion MDP</td>
+          <td>Accès refusé</td>
+          <td>Accès refusé</td>
+        </tr>
+        <tr>
+          <td><strong>Fichiers</strong></td>
+          <td>Upload / Download complet</td>
+          <td>Upload / Download (sur assignation)</td>
+          <td>Download uniquement</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="highlight-box" style="text-align: left; font-size: 10pt; font-weight: normal;">
+      <strong style="font-size: 11pt; display: block; margin-bottom: 8px;">Triple Verrouillage Sécuritaire :</strong>
+      <ul style="margin: 0; padding-left: 20px;">
+        <li><strong>Frontend Verrou</strong> : Utilisation de Contextes React (<code>useAuth</code>) pour cacher
+          purement et simplement les menus et boutons selon la valeur de <code>user.role</code>.</li>
+        <li><strong>Routing Verrou</strong> : Côté Laravel, les routes comme <code>/api/clients</code> sont protégées
+          par le middleware <code>admin</code>. Un Postman avec un token d'employé se verra opposer une
+          <code>403 Forbidden</code>.
+        </li>
+        <li><strong>Model Scopes Verrou</strong> : Même s'ils ont accès à <code>/api/projects</code>, un Global Scope
+          Eloquent force la BDD à ne renvoyer que les enregistrements rattachés à <code>Auth::id()</code> via les tables
+          pivots.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE 19 – PARTIE IV: RÉALISATION
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h2>6. Réalisation Détaillée & Implémentation</h2>
+    <h3>6.1 Structure du projet (React & Laravel)</h3>
+    <p>L'arborescence du projet a été construite pour scaler efficacement, respectant les standards de l'industrie :
+      modularisation côté React et pattern MVC complet côté Laravel.</p>
+
+    <div style="display: flex; gap: 20px;">
+      <div
+        style="flex: 1; background: #282c34; color: #abb2bf; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 9.5pt; overflow-x: hidden;">
+        <strong style="color: #61dafb; display: block; margin-bottom: 8px;">/frontend (React 18)</strong>
+        ├─ /src<br>
+        │ ├─ /assets&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#5c6370;">// Images, Logos</span><br>
+        │ ├─ /components&nbsp;&nbsp;<span style="color:#5c6370;">// Boutons, Modals, Navbar</span><br>
+        │ ├─ /pages&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#5c6370;">// Vues principales</span><br>
+        │ │ ├─ Dashboard.jsx<br>
+        │ │ ├─ Employees.jsx<br>
+        │ │ └─ Tickets.jsx<br>
+        │ ├─ /config&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#5c6370;">// axios.js, constants</span><br>
+        │ ├─ /contexts&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#5c6370;">// AuthContext.jsx</span><br>
+        │ ├─ index.css&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#5c6370;">// Variables Tailwind</span><br>
+        │ └─ main.jsx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#5c6370;">// Point d'entrée DOM</span><br>
+        └─ package.json
+      </div>
+      <div
+        style="flex: 1; background: #282c34; color: #abb2bf; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 9.5pt; overflow-x: hidden;">
+        <strong style="color: #ff2d20; display: block; margin-bottom: 8px;">/backend (Laravel 11)</strong>
+        ├─ /app<br>
+        │ ├─ /Http<br>
+        │ │ ├─ /Controllers <span style="color:#5c6370;">// Logique API</span><br>
+        │ │ ├─ /Requests&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#5c6370;">// Règles Validation</span><br>
+        │ │ └─ /Middleware&nbsp;&nbsp;<span style="color:#5c6370;">// CheckAdmin.php</span><br>
+        │ └─ /Models&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#5c6370;">// User,
+          Project...</span><br>
+        ├─ /database<br>
+        │ ├─ /migrations&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#5c6370;">// Schémas SQL</span><br>
+        │ └─ /seeders&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#5c6370;">// Fausses
+          données</span><br>
+        ├─ /routes<br>
+        │ └─ api.php&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#5c6370;">// Endpoints
+          REST</span><br>
+        └─ .env
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE 20 – DESIGN SYSTEM
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h3>6.2 Design System & Expérience Utilisateur (Soft-UI)</h3>
+    <p>Une attention exceptionnelle a été portée à <strong>l'esthétique et à l'ergonomie (UX/UI)</strong>. Les
+      interfaces B2B sont souvent froides et génériques. Pour Promptis Manager, le but était de délivrer un produit
+      "Premium", qui valorise l'image de marque de Promptis face à ses propres clients.</p>
+
+    <div class="info-box">
+      <p><strong>La charte "Soft-UI"</strong> : plutôt que d'utiliser des bordures dures et des couleurs d'alerte
+        primaires, nous avons implémenté un système de design moderne axé sur :
+        <br>1. Des ombres diffuses (<code>drop-shadow-sm</code>) remplaçant les séparations nettes.
+        <br>2. Une palette HSL cohérente : variations de bleu océan (Primary) contrastées par du blanc pur et un fond de
+        page <code>#f8fafc</code> (Slate 50).
+        <br>3. Des micro-animations : "Hover states" sur tous les tableaux, translations subtiles (-2px) sur les
+        boutons, renvoyant un feedback immédiat à l'utilisateur.
+      </p>
+    </div>
+
+    <h4>Composants réutilisables (React)</h4>
+    <p>Pour maintenir une cohérence et une vélocité de rendu sur les 8 écrans majeurs, nous avons codé nos propres
+      composants primitifs UI. Par exemple, au lieu de réécrire les statistiques de haut de page dans chaque module, un
+      composant <code>&lt;StatCard value={...} title={...} icon={...} trend={...} /&gt;</code> a été créé. Ce pattern
+      DRY (Don't Repeat Yourself) divise la taille du code final par deux.</p>
+    <p>L'iconographie repose entièrement sur la librairie <strong>HeroIcons</strong> (SVG pur), garantissant une netteté
+      parfaite des vecteurs sans le poids d'une librairie icon-font complète.</p>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGES 21 to 28 – MODULES DEEP DIVES
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h3>6.3 Module 1 : Authentification & Inscription</h3>
+    <p>Ce module agit comme la porte d'entrée inviolable de l'application. La sécurité y est omni-présente, cachée sous
+      une interface attrayante.</p>
+
+    <div style="display: flex; gap: 15px; margin: 20px 0; justify-content: center;">
+      <img src="c:\Users\HP\Downloads\Diagram_Promptis\LoginPromptis.jpeg" alt="Page de Connexion"
+        style="width: 48%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+      <img src="c:\Users\HP\Downloads\Diagram_Promptis\InscriptionPromptis.png" alt="Page d'Inscription"
+        style="width: 48%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    </div>
+    <p class="img-caption">Figure 8 - Vues des pages de Connexion et d'Inscription</p>
+
+    <h4>Détail technique de l'implémentation</h4>
+    <p>Lors d'un Login, React envoie les credentials <code>(email, password)</code> via Axios POST. Laravel vérifie la
+      base de données. En cas de succès, Sanctum génère un token cryptographique de 40 caractères.</p>
+    <p>Côté React, ce token est stocké dans le <code>localStorage</code>, tandis que les informations du profil (rôle,
+      nom) sont injectées dans un état global <code>Context API</code>. Dès lors, <strong>chaque</strong> requête HTTP
+      sortante passée par l'application inclut automatiquement ce token grâce à un <strong>Intercepteur Axios</strong>
+      configuré dans <code>src/config/axios.js</code> :</p>
+    <pre
+      style="background: #1e1e1e; color: #d4d4d4; padding: 10px; border-radius: 6px; font-size: 9pt; overflow-x: auto; font-family: monospace;">
+axiosClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) config.headers.Authorization = "Bearer " + token;
+  return config;
+});
+    </pre>
+  </div>
+
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h3>6.4 Module 2 : Tableau de Bord & Statistiques dynamiques</h3>
+    <p>Le Dashboard est l'écran directionnel d'atterrissage. Son but est d'offrir en un clin d'œil la santé globale de
+      l'organisation pour l'administrateur, ou un récapitulatif personnel pour le client.</p>
+
+    <div style="margin: 20px 0; text-align: center;">
+      <img src="c:\Users\HP\Downloads\Diagram_Promptis\DashboardPromptis.png" alt="Dashboard" style="width: 100%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+      <p class="img-caption">Figure 9 - Tableau de bord côté administrateur</p>
+    </div>
+
+    <h4>Détail technique de l'implémentation</h4>
+    <p>Pour éviter l'accumulation de dizaines de requêtes API (N+1 query problem), le backend Laravel a été optimisé
+      pour compiler l'intégralité des KPIs (chiffre d'affaires brut, tickets en cours, taux de progression moyen) en
+      <strong>une unique requête SQL agrégée</strong> au sein de <code>DashboardController</code>.
+    </p>
+    <p>Le Frontend réceptionne alors une payload JSON parfaitement structurée et mappe les données dans la librairie
+      <strong>Recharts</strong>. Nous avons implémenté des "Sparklines" en SVG pur avec un dégradé (Gradient) dynamique
+      sous les courbes pour offrir cet aspect Soft-UI de haute qualité. Le rendu graphique s'adapte sans scintillement
+      au redimensionnement de l'écran.
+    </p>
+  </div>
+
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h3>6.5 Module 3 : Gestion B2B (Employés & Clients)</h3>
+    <p>L'administration opérationnelle implique la gestion stricte du personnel interne (employés Promptis) et des
+      entreprises externes (clients du portail).</p>
+
+    <div style="display: flex; gap: 15px; margin: 20px 0; justify-content: center;">
+      <img src="c:\Users\HP\Downloads\Diagram_Promptis\EmployesPromptis.png" alt="Employés" style="width: 48%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+      <img src="c:\Users\HP\Downloads\Diagram_Promptis\ClientPromptis.png" alt="Clients" style="width: 48%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    </div>
+    <p class="img-caption">Figure 10 - Interface de gestion Clients et Employés</p>
+
+    <h4>Détail technique de l'implémentation</h4>
+    <p>Sur cette interface, l'accent a été mis sur la <strong>gestion unifiée des formulaires</strong>. Plutôt que de
+      développer une page distincte pour créer un élément et une autre pour l'éditer, un composant Modale superposé
+      (Overlay React) est exploité dans les deux cas.</p>
+    <p>La validation bénéficie d'une approche hybride : une pré-validation en JavaScript (vérifiant instantanément la
+      longueur ou le pattern d'email) empêchant les envois inutiles. Ensuite, Laravel intervient via ses
+      <code>FormRequests</code>, garantissant par exemple que l'adresse email d'un nouvel employé est unique dans le
+      système avec la règle stricte <code>'email' =&gt; 'required|email|unique:users'</code>.
+    </p>
+  </div>
+
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h3>6.6 Module 4 : Gestion des Projets</h3>
+    <p>Le module projets est le cœur métier de l'outil. Il relie ensemble N employés à 1 client sur une période donnée
+      et gère l'état d'avancement ainsi que le budget alloué par Promptis.</p>
+
+    <div style="margin: 20px 0; text-align: center;">
+      <img src="c:\Users\HP\Downloads\Diagram_Promptis\ProjetPromptis.png" alt="Projets" style="width: 100%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+      <p class="img-caption">Figure 11 - Module Projets et état métier</p>
+    </div>
+
+    <h4>Détail technique de l'implémentation</h4>
+    <p>Techniquement, les projets exploitent une relation complexe <strong>Many-to-Many</strong> entre
+      <code>Project</code> et <code>User</code>. Du côté Laravel Eloquent, l'enregistrement se fait en cascade : on crée
+      le projet, la liaison au client (Foreign Key), puis la synchronisation de l'équipe via la méthode
+      <code>$project-&gt;employees()-&gt;sync($request-&gt;employees)</code> qui garantit un pivot exact.
+    </p>
+    <p>UI-wise, l'appli offre un filtrage avancé. En tapant dans une barre de recherche spécifique native à la vue, la
+      fonction <code>.filter()</code> de JavaScript recalcule le tableau affiché en millisecondes, offrant une recherche
+      temps-réel instantanée (Zero-latency filtering) avant même de relancer une recherche serveur.</p>
+  </div>
+
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h3>6.7 Module 5 : Tickets de Support</h3>
+    <p>Les tickets assurent l'ITSM (IT Service Management). Ce module remplace les échanges par email erratiques par un
+      log centralisé, horodaté et commentable lié directement à l'ID d'un projet.</p>
+
+    <div style="margin: 20px 0; text-align: center;">
+      <img src="c:\Users\HP\Downloads\Diagram_Promptis\TicketPromptis.png" alt="Tickets" style="width: 100%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+      <p class="img-caption">Figure 12 - Système de Ticketing Helpdesk</p>
+    </div>
+
+    <h4>Détail technique de l'implémentation</h4>
+    <p>Le statut des tickets ("Ouvert", "En cours", "Résolu") exploite un mapping colorimétrique automatisé sur le front
+      (Rouge, Orange, Vert).
+      Le point de force de ce module réside dans sa relation <strong>One-to-Many Polymorphique</strong> simulée via les
+      logs (Comments). La vue détaillée d'un ticket déclenche un <code>useEffect</code> secondaire en React qui Fetch
+      tout l'historique asynchrone des <code>ticket_comments</code>, générant une chronologie style "Chat" très fluide.
+    </p>
+  </div>
+
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h3>6.8 Module 6 : Gestion des Fichiers</h3>
+    <p>Un GED (Gestionnaire Électronique de Documents) léger conçu pour rendre le transfert manuel obsolète. Les clients
+      téléversent des spécifications, l'équipe uploade les livrables .zip et docs de rendu.</p>
+
+    <div style="margin: 20px 0; text-align: center;">
+      <img src="c:\Users\HP\Downloads\Diagram_Promptis\FichierPromptis.png" alt="Fichiers" style="width: 100%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+      <p class="img-caption">Figure 13 - UI/UX du GED intégré</p>
+    </div>
+
+    <h4>Détail technique de l'implémentation</h4>
+    <p>L'upload implique du protocole Multipart. Frontend via React : on instancie un nouvel objet
+      <code>FormData()</code>, dans lequel on ajoute le binaire <code>file</code> via un input de type file natif
+      stylisé.
+    </p>
+    <p>Backend via Laravel : le contrôleur réceptionne et utilise la Facade
+      <code>Storage::disk('public')-&gt;put()</code>. Les fichiers ne sont pas conservés en BDD de manière binaire,
+      seule le chemin physique (Path URI) l'est (ex: <code>storage/files/doc123.pdf</code>), maximisant ainsi les IO/s
+      et réduisant le gonflage MySQL. Le Frontend lit l'extension (ex: .pdf, .docx, .png) et affiche dynamiquement
+      l'icône HeroIcon adéquate pour rendre l'interface intuitive.
+    </p>
+  </div>
+
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h3>6.9 Outils Transverses : Recherche Globale & Notifications</h3>
+    <p>Certains outils ne sont pas liés à une page précise mais gravitent tout autour de l'application : ce sont nos
+      fonctionnalités d'accessibilité rapide.</p>
+
+    <h4>6.9.1 La Recherche Globale Universelle</h4>
+    <p>Intégrée nativement en haut de la Sidebar persistance, la barre de recherche permet à un administrateur Promptis
+      de taper "Alpha" et de recevoir immédiatement dans un panneau déroulant le Projet Alpha, le Client Société Alpha,
+      ou tout Ticket contenant Alpha. Sur le backend, un endpoint API global invoque trois classes de modèle distinctes
+      en parallèle, consolidées dans une collection unifiée JSON via Eloquent.</p>
+
+    <h4>6.9.2 Polling de Notifications</h4>
+    <p>Plutôt que de forcer un rechargement F5, l'application exécute de manière invisible un <code>setInterval</code>
+      JavaScript pour invoquer l'API Laravel chaque minute, et s'informer des modifications passives (tickets assignés).
+      Un indicateur cloche devient rouge vif. Ce mécanisme, moins coûteux en infrastructures qu'un serveur WebSockets
+      (Pusher), répond parfaitement aux besoins synchrones du cabinet de consulting.</p>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE 29 – PARTIE V: VALIDATION ET DEPLOIEMENT
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h2>7. Difficultés Rencontrées et Solutions</h2>
+    <p>Mon stage formatif n'a pas été sans obstacles techniques professionnels. Les résoudre a constitué l'essentiel de
+      mon apprentissage architectural pratique.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Difficulté Technique majeure</th>
+          <th>Impact sur le projet</th>
+          <th>Analyse logicielle & Solution Ingénierie</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>CORS Policy Blocked</strong> : Lors de la communication React/Laravel.</td>
+          <td>Bloquage intégral des appels de connexion d'environnement.</td>
+          <td>Configuration complète du fichier <code>cors.php</code> de Laravel origin. Ajout du support credentials.
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Perte d'authentification après F5</strong></td>
+          <td>Déconnexion frustrante d'utilisateur lors du rechargement de vue.</td>
+          <td>Mise en place d'un contexte React <code>useAuth()</code> et stockage du Token via
+            <code>localStorage</code>. Hook useEffect au mount.
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Problèmes N+1 Queries (Eloquent BDD)</strong></td>
+          <td>Temps de charge des Dashboards s'effondrant (lenteurs API).</td>
+          <td>Mise en application du <em>Eager Loading</em> syntaxe Laravel afin de réduire de 100 requêtes SQL à
+            seulement 2 requêtes indexées.</td>
+        </tr>
+        <tr>
+          <td><strong>Rendu React StrictMode</strong></td>
+          <td>Duplication involontaire d'appels API lors des tests de développement.</td>
+          <td>Nettoyage du code asynchrone dans des fonctions de <code>cleanup()</code> du useEffect, garantissant
+            l'Idempotence SPA.</td>
+        </tr>
+        <tr>
+          <td><strong>Erreurs JSON Parsing (API 500)</strong></td>
+          <td>L'application plantait au lieu d'afficher une alerte (Crash blanc).</td>
+          <td>Attrapage via bloc <code>try catch</code> coté Axios, conversion de l'objet erreur en messages flash toast
+            élégants.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE 30 – TEST QUALITE DEPLOIEMENT
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h2>8. Exploitation, Tests et Déploiement</h2>
+
+    <h3>8.1 Stratégie de tests</h3>
+    <p>L'assurance qualité a été gérée manuellement et rigoureusement via Postman pour la couche applicative Backend, et
+      visuellement en navigateur pour le Frontend.</p>
+    <ul>
+      <li><strong>Tests Unitaires BDD</strong> : Les routes de création ont été poussées aux limites avec envoi de
+        Formulaires vides pour s'assurer que PHP/Laravel renvoyait systématiquement les JSON d'erreurs de validation
+        standardisés.</li>
+      <li><strong>Tests d'Intégration d'Etat (React)</strong> : Vérification constante de la désactivation (disable) du
+        bouton de soumission le temps que l'API réponde, évitant la duplication de clics frénétiques (Double-submission
+        bug).</li>
+      <li><strong>Test de Sécurité RBAC</strong> : Tentative d'accès depuis le Token d'un ID Client à la route de
+        destruction (DEL) d'un profil Employé <code>/api/employees/delete</code>. La réponse vérifiée en
+        <code>403 Action Unauthorized</code> a validé le mur de sécurité.
+      </li>
+    </ul>
+
+    <h3>8.2 Qualité de code & Conventions</h3>
+    <p>Une stricte hygiène de code a été imposée afin de maintenir la lisibilité par d'autres ingénieurs de Promptis :
+    </p>
+    <ul>
+      <li><strong>PascalCase</strong> pour la nomenclature des composants React (ex: <code>StatCard.jsx</code>).</li>
+      <li><strong>camelCase</strong> pour la définition des variables JavaScript.</li>
+      <li><strong>snake_case</strong> imposé pour absolument tous les noms des colonnes MYSQL.</li>
+      <li>Factorisation intégrale des appels API à l'intérieur d'un Service de Config.</li>
+    </ul>
+
+    <h3>8.3 Préparation au déploiement production</h3>
+    <p>Pour le passage en mode production du SI au terme du stage :</p>
+    <div class="info-box">
+      <p>1. <strong>Backend</strong> : Exécution de <code>php artisan optimize</code> et stockage des configurations en
+        fichiers plats via <code>config:cache</code>. Basculement de l'environnement DEV à PROD.<br>
+        2. <strong>Frontend</strong> : Compilation par Vite via <code>npm run build</code> générant des fichiers HTML et
+        JS minimisé, transpilés, hashés garantissant la révocation de cache navigateur lors des MAJ.</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE 31 – BILAN PARTIE VI
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h2>9. Bilan et Compétences Acquises</h2>
+
+    <h3>9.1 Compétences techniques pointues acquises</h3>
+    <p>S'insérer dans un projet d'une telle envergure de A à Z (du MCD jusqu'à la compilation build) demande une courbe
+      d'apprentissage que ce stage m'a permis de franchir avec succès :</p>
+    <ul>
+      <li><strong>Architecture Hybride Full-Stack</strong> : Je suis devenu fluide avec le concept de séparation totale
+        Client-Serveur par API RESTful, abandonnant les vieux paradigmes Blades/MVC pur au profit d'un Front modulaire
+        très riche.</li>
+      <li><strong>Complexité Eloquent Associative</strong> : Maîtrise avancée des relations <code>hasMany</code>,
+        <code>belongsToMany</code> de type pivot, manipulation fine de collections Laravel et optimisation.
+      </li>
+      <li><strong>Maîtrise d'Etat Complète en React 18</strong> : Navigation courante entre les mémoires (Context, State
+        locale, LocalStorage), gestion asynchrone point-à-point, application rigoureuse de classes Tailwind par des
+        opérateurs ternaires et fonctions de maps.</li>
+      <li><strong>Base de données Analytique</strong> : Compréhension précise de Comment et Pourquoi l'indexation MySQL
+        participe à la génération instantanée de calculs statistiques Dashboard.</li>
+    </ul>
+
+    <h3>9.2 Déploiement transversal Humain</h3>
+    <p>Au-delà de l'écriture pure de la syntaxe informatique, j'ai touché du doigt l'ingénierie globale de solution
+      d'entreprise :</p>
+    <ul>
+      <li><strong>Traduction de Cadrage</strong> : Passer d'un besoin fonctionnel à une solution technique abstraite et
+        modélisée logiciellement.</li>
+      <li><strong>Qualité Itérative</strong> : S'inscrire dans un circuit de mise à jour (Correction d'UI, debugs) non
+        pas en cassant un code existant, mais en utilisant un écosystème de composants testables, indépendants (Agilité
+        dev).</li>
+    </ul>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE 32 – CONCLUSION FINALE
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h3>9.3 Conclusion Générale et Perspectives</h3>
+    <p>Le stage effectué chez Promptis IT Consulting constituait un défi stimulant de fin de cursus OFPPT, et marqua
+      véritablement ma transition de l'académique vers l'ingénierie professionnelle. En l'espace de 5 semaines
+      immensément denses, la solution intégrale "Promptis Manager" a été planifiée, conçue, codée ligne par ligne puis
+      optimisée pour réunifier le cœur métier stratégique de la société.</p>
+
+    <div class="highlight-box">
+      Résultat Formel : Un produit logiciel abouti, sécurisé, responsive, prêt pour la mise en recette par la direction.
+      Une centralisation garantie évitant les pertes d'e-mails et facilitant l'accès documentaire sécurisé entre
+      Promptis et sa clientèle.
+    </div>
+
+    <p>Personnellement, ce projet m'a permis d'affiner considérablement mes méthodes d'architecte logiciel, de prendre
+      responsabilité lors de bugs cruciaux et de découvrir le réel impact concret de la rapidité (Performance et UI) sur
+      le ressenti de l'utilisateur final et sur la réputation d'une ESN IT.</p>
+
+    <h4>Perspectives futures logicielles</h4>
+    <p>Afin de prolonger le cycle de vie de la plateforme Promptis Manager, plusieurs axes d'améliorations peuvent être
+      tracés à moyen terme :</p>
+    <ul>
+      <li><strong>Serveur Synchrones WebSockets</strong> : Faire basculer le système asynchrone "polling" actuel vers un
+        Hub serveur <code>Laravel Reverb</code> pour délivrer le chat "Ticket" et des notifications à proprement parler
+        en temps réel instantané.</li>
+      <li><strong>Exportation Dynamique</strong> : Fournir aux administrateurs une fonctionnalité d'export PDF brut /
+        Excel d'un reporting complet des finances mensuelles.</li>
+    </ul>
+
+    <p style="text-align: right; margin-top: 40px; font-style: italic; color: #555;">Ce document achève de formuler ma
+      gratitude envers l'équipe Promptis et concrétise l'accomplissement d'un parcours exceptionnel auprès de l'ISTA de
+      l'OFPPT.</p>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE 33 – ANNEXE API
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h2>10. Annexes</h2>
+    <h3>Annexe A – Documentation API (Endpoints Stratégiques)</h3>
+    <p>Cette annexe technique inventorie le socle URL applicatif, utile pour le futur de Promptis dans l'élaboration
+      d'expositions transverses.</p>
+
+    <table style="font-size: 9pt;">
+      <thead>
+        <tr>
+          <th>Méthode</th>
+          <th>Endpoint (URI)</th>
+          <th>Rôle et description profonde</th>
+          <th>Middleware</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>POST</td>
+          <td>/api/login</td>
+          <td>Authentifie l'identifiant et renvoie le porteur (Bearer Token).</td>
+          <td>guest</td>
+        </tr>
+        <tr>
+          <td>POST</td>
+          <td>/api/logout</td>
+          <td>Détruit la validité absolue du token envoyé.</td>
+          <td>auth</td>
+        </tr>
+        <tr>
+          <td>GET</td>
+          <td>/api/user</td>
+          <td>Renvoie la hiérarchie du Payload utilisateur connecté.</td>
+          <td>auth</td>
+        </tr>
+
+        <tr>
+          <td style="color:#0284c7;font-weight:bold;">GET</td>
+          <td>/api/projects</td>
+          <td>Délivre une liste de Projet couplé.</td>
+          <td>auth</td>
+        </tr>
+        <tr>
+          <td style="color:#16a34a;font-weight:bold;">POST</td>
+          <td>/api/projects</td>
+          <td>FormRequest: Création complexe d'un projet.</td>
+          <td>admin</td>
+        </tr>
+        <tr>
+          <td style="color:#eab308;font-weight:bold;">PUT</td>
+          <td>/api/projects/{id}</td>
+          <td>Met à jour les détails financiers et l'avancement.</td>
+          <td>admin</td>
+        </tr>
+
+        <tr>
+          <td style="color:#0284c7;font-weight:bold;">GET</td>
+          <td>/api/tickets</td>
+          <td>Répertorie le log relationnel HelpDesk.</td>
+          <td>auth</td>
+        </tr>
+        <tr>
+          <td style="color:#16a34a;font-weight:bold;">POST</td>
+          <td>/api/tickets/{id}/comments</td>
+          <td>Permute une entrée polymorphique sur un Ticket.</td>
+          <td>auth</td>
+        </tr>
+
+        <tr>
+          <td style="color:#dc2626;font-weight:bold;">DELETE</td>
+          <td>/api/files/{id}</td>
+          <td>Action en deux temps : détruit path MySQL ET file.</td>
+          <td>admin</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE 34 – ANNEXE B & C
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h3>Annexe B – Guide d'Installation / Compilation Technique</h3>
+    <p>Détail des lignes de commandes pour relancer l'environnement chez tout autre dev Promptis :</p>
+
+    <div
+      style="background: #282c34; color: #abb2bf; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 9pt; margin-bottom: 20px;">
+      <span style="color: #c678dd;"># Initialisation du Backend (Laravel)</span><br>
+      $ cd backend<br>
+      $ composer install<br>
+      $ cp .env.example .env <span style="color:#5c6370;"># Remplir variables DB</span><br>
+      $ php artisan key:generate<br>
+      $ php artisan migrate:fresh --seed <span style="color:#5c6370;"># Populer base</span><br>
+      $ php artisan storage:link <span style="color:#5c6370;"># Obligatoire accès fichiers</span><br>
+      $ php artisan serve <span style="color:#5c6370;"># Boot serveur local API 8000</span><br>
+      <br>
+      <span style="color: #61dafb;"># Initialisation du Frontend (React/Vite)</span><br>
+      $ cd frontend<br>
+      $ npm install<br>
+      $ cp .env.example .env <span style="color:#5c6370;"># Pointer vers API distante</span><br>
+      $ npm run dev <span style="color:#5c6370;"># Lancement Hot reload sur port 5173</span>
+    </div>
+
+    <h3>Annexe C – Bibliographie logicielle et Documentation explorée</h3>
+    <ul style="line-height: 1.8; margin-top: 15px; font-size: 10.5pt;">
+      <li>Documentation officielle de référence <strong>React.js Framework</strong> :
+        <em>https://react.dev/reference/react</em> (Cycles hooks).
+      </li>
+      <li>Architecture FormRequest de <strong>Laravel 11.x PHP</strong> :
+        <em>https://laravel.com/docs/11.x/validation</em>
+      </li>
+      <li>Concepts de cryptographie Tokens API via <strong>Laravel Sanctum</strong> :
+        <em>https://laravel.com/docs/11.x/sanctum</em>
+      </li>
+      <li>Moteur CSS atomique JIT & Propriétés par <strong>Tailwind CSS V3.4</strong> :
+        <em>https://tailwindcss.com/docs</em>
+      </li>
+      <li>Logiques de Hot-servering et de Proxy pass par <strong>Vite JS Build tools</strong> :
+        <em>https://vite.dev/guide/</em>
+      </li>
+      <li>Schématisations algorithmiques en Ingénierie logicielle (UML) – <em>OFPPT Support pédagogique M104</em></li>
+    </ul>
+
+    <div class="page-footer" style="margin-top: 60px;">
+      Document réalisé par <strong>Mohammed Ilyas Salmy</strong> &nbsp;·&nbsp;
+      OFPPT – Développement Digital Full Stack – 2025/2026 &nbsp;·&nbsp;
+      Stage réalisé chez Promptis IT Consulting Services, Casablanca – Février 2026
+    </div>
+  </div>
+</body>
+
+</html>
