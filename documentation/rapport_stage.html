@@ -18,7 +18,7 @@
     body {
       font-family: Arial, Helvetica, sans-serif;
       font-size: 11pt;
-      line-height: 1.65;
+      line-height: 1.5;
       color: #1a1a2e;
       background: #fff;
     }
@@ -33,6 +33,7 @@
 
     /* ── PAGE LAYOUT ──────────────────────────────── */
     .page {
+      position: relative;
       width: 210mm;
       min-height: 297mm;
       margin: 0 auto 20px;
@@ -40,6 +41,9 @@
       background: #fff;
       box-shadow: 0 0 8px rgba(0, 0, 0, .15);
       page-break-after: always;
+      border: 2px solid var(--blue);
+      outline: 1px solid var(--cyan);
+      outline-offset: -6px;
     }
 
     .page:last-child {
@@ -170,8 +174,8 @@
     h2 {
       color: var(--blue);
       font-size: 14pt;
-      margin-top: 28px;
-      margin-bottom: 12px;
+      margin-top: 22px;
+      margin-bottom: 10px;
       padding-bottom: 5px;
       border-bottom: 2px solid var(--border);
     }
@@ -179,8 +183,8 @@
     h3 {
       color: var(--blue);
       font-size: 11.5pt;
-      margin-top: 20px;
-      margin-bottom: 8px;
+      margin-top: 16px;
+      margin-bottom: 5px;
     }
 
     h4 {
@@ -198,11 +202,11 @@
     ul,
     ol {
       padding-left: 22px;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
     }
 
     li {
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     strong {
@@ -325,12 +329,19 @@
 
     .diagram-img {
       width: 100%;
+      max-width: 95%;
+      /* Increased for better visibility */
       height: auto;
       border: 1px solid var(--border);
       border-radius: 8px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       display: block;
-      margin: 12px auto;
+      margin: 16px auto;
+    }
+
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
     }
 
     /* ── CHECKLIST ────────────────────────────────── */
@@ -366,13 +377,16 @@
 
     /* ── TOC ──────────────────────────────────────── */
     .toc {
-      font-size: 10.5pt;
+      font-size: 11pt;
+      /* Increased from 10.5pt */
     }
 
     .toc-h2 {
-      margin-top: 10px;
+      margin-top: 18px;
+      /* Increased from 10px to fill space */
       font-weight: bold;
       color: var(--blue);
+      font-size: 12pt;
     }
 
     .toc-h3 {
@@ -384,7 +398,8 @@
       display: flex;
       justify-content: space-between;
       border-bottom: 1px dotted #ccc;
-      padding: 3px 0;
+      padding: 6px 0;
+      /* Increased from 3px */
     }
 
     /* ── FOOTER ───────────────────────────────────── */
@@ -397,6 +412,10 @@
       text-align: center;
     }
 
+    .print-fixed-header {
+      display: none;
+    }
+
     /* ── PRINT ────────────────────────────────────── */
     @page {
       size: A4;
@@ -405,15 +424,65 @@
 
     @media print {
       body {
+        margin: 0;
+        padding: 0;
         background: #fff;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        top: 5mm;
+        right: 5mm;
+        bottom: 5mm;
+        left: 5mm;
+        border: 2px solid var(--blue);
+        outline: 1px solid var(--cyan);
+        outline-offset: -5px;
+        pointer-events: none;
+        z-index: 999;
+      }
+
+      .print-fixed-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 8mm;
+        left: 10mm;
+        right: 10mm;
+        padding: 0 4mm 2mm 4mm;
+        border-bottom: 1.5px solid var(--border);
+        background: #fff;
+        z-index: 1000;
+      }
+
+      .print-fixed-header img {
+        height: 11mm;
+        width: auto;
+        object-fit: contain;
+      }
+
+      .page-header {
+        display: none !important;
+      }
+
+      .cover .logos {
+        display: none !important;
       }
 
       .page {
         box-shadow: none;
         margin: 0;
-        padding: 18mm 22mm 16mm 22mm;
+        width: 210mm;
+        min-height: 297mm;
+        padding: 28mm 15mm 12mm 15mm;
         page-break-after: always;
-        min-height: 0;
+        page-break-inside: auto;
+        -webkit-box-decoration-break: clone;
+        box-decoration-break: clone;
+        border: none;
+        outline: none;
       }
 
       .img-placeholder {
@@ -448,16 +517,21 @@
       }
 
       table {
-        page-break-inside: avoid;
+        page-break-inside: auto;
       }
 
       .no-break {
-        page-break-inside: avoid;
+        page-break-inside: auto;
       }
 
       .diagram-block {
-        page-break-inside: avoid;
-        break-inside: avoid;
+        page-break-inside: auto;
+        break-inside: auto;
+      }
+
+      pre {
+        page-break-inside: auto;
+        break-inside: auto;
       }
 
       .diagram-img {
@@ -468,6 +542,11 @@
 </head>
 
 <body>
+
+  <div class="print-fixed-header">
+    <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT" />
+    <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis" />
+  </div>
 
   <!-- ══════════════════════════════════════════════════
      PAGE 1 – COUVERTURE
@@ -483,7 +562,7 @@
       <hr class="cover-divider" />
       <p class="cover-org">ROYAUME DU MAROC</p>
       <p class="cover-org">Office de la Formation Professionnelle et de la Promotion du Travail</p>
-      <p class="cover-inst">Institut Spécialisé de Technologie Appliquée</p>
+      <p class="cover-inst">Institut Spécialisé De Gestion Et D’informatique (ISGI)</p>
       <hr class="cover-divider" />
       <p class="cover-label">RAPPORT DE STAGE DE FIN DE FORMATION</p>
       <p class="cover-filiere">Filière : Développement Digital – Full Stack</p>
@@ -500,23 +579,18 @@
         </tr>
         <tr>
           <td>Encadrant de l'entreprise </td>
-          <td>Reda Bounnar</td>
+          <td>Mr Reda Bounar</td>
         </tr>
         <tr>
           <td>Encadrant de l'école </td>
-          <td>Rabiaa Sabour</td>
+          <td>Mme RABIA SABOUR ELIDRIS</td>
         </tr>
         <tr>
           <td>Période de stage</td>
           <td>Janvier – Février 2026</td>
         </tr>
-        <tr>
-          <td>Durée</td>
-          <td>5 semaines</td>
-        </tr>
-        <tr>
-          <td>Année de formation</td>
-          <td>2025 / 2026</td>
+        <td>Année de formation</td>
+        <td>2025 / 2026</td>
         </tr>
       </table>
     </div>
@@ -536,8 +610,8 @@
 
     <h2 style="text-align: center; border-bottom: none; margin-top: 100px;">Dédicace</h2>
     <div style="font-style: italic; text-align: center; line-height: 2; margin-top: 50px; font-size: 12pt;">
-      <p>À mes chers parents,<br>
-        Pour tous les sacrifices qu'ils ont consentis pour mon éducation et ma réussite.<br>
+      <p>À me cher mère,<br>
+        Pour tous les sacrifices qu'elle a consentis pour mon éducation et ma réussite.<br>
         Leur soutien inconditionnel et leurs prières ont été ma plus grande force.</p>
 
       <p style="margin-top: 20px;">À toute ma famille,<br>
@@ -562,15 +636,78 @@
     </div>
 
     <h2>Remerciements</h2>
-    <p>Je tiens à exprimer ma profonde gratitude envers toutes les personnes qui ont contribué à la réussite de ce stage
-      et à l'aboutissement de ce projet.</p>
-    <p><strong>L'équipe Promptis</strong> : Pour m'avoir accueilli au sein de leur entreprise et pour la confiance
-      qu'ils m'ont accordée en me confiant ce projet. Leur expertise en consulting IT et leur environnement de travail
-      professionnel m'ont permis d'acquérir une expérience précieuse.</p>
-    <p><strong>Mes formateurs à l'OFPPT</strong> : Pour leur enseignement de qualité tout au long de ma formation en
-      Développement Digital. Les compétences techniques transmises ont été essentielles pour mener à bien ce projet.</p>
-    <p><strong>Mes collègues de promotion</strong> : Pour l'entraide, les échanges enrichissants et le soutien mutuel
-      qui ont marqué ces années de formation.</p>
+    <p>Au terme de ce stage de fin de formation, je tiens à exprimer ma profonde gratitude envers toutes les personnes
+      qui ont contribué, de près ou de loin, à la réussite de ce projet technique et à mon épanouissement professionnel
+      au sein de l'entreprise.</p>
+
+    <p>Mes remerciements s'adressent tout d'abord à <strong>Monsieur Reda Bounar</strong>, mon encadrant au sein de
+      l'entreprise <strong>Promptis</strong>, pour m'avoir accueilli au sein de son équipe et pour la confiance qu’il
+      m'a témoignée en me confiant la responsabilité du projet <em>Promptis Manager</em>. Ses orientations stratégiques
+      et ses conseils techniques avisés ont été déterminants pour le succès de cette plateforme.</p>
+
+    <p>Je tiens également à exprimer ma reconnaissance envers l'ensemble de l'équipe technique de Promptis pour leur
+      accueil chaleureux, leur disponibilité et leur esprit de partage. Travailler dans un environnement aussi stimulant
+      m'a permis de me confronter aux réalités du métier de développeur Full Stack et d'apprendre les meilleures
+      pratiques du secteur IT.</p>
+
+    <p>Mes plus vifs remerciements vont également à <strong>Madame Rabiaa Sabour</strong>, mon encadrante pédagogique à
+      l'OFPPT, pour son soutien constant, sa disponibilité et la qualité de son encadrement tout au long de mon cursus.
+      Son expertise et sa rigueur m'ont permis de structurer ma réflexion et de mener à bien ce rapport de stage.</p>
+
+    <p>Enfin, je remercie tout le corps professoral de l'<strong>ISGI</strong> pour la qualité des enseignements
+      prodigués durant ces deux années de formation, ainsi que mes collègues de promotion pour les moments d'entraide et
+      les échanges enrichissants qui ont marqué notre parcours commun.</p>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE – RÉSUMÉ / ABSTRACT
+══════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-header">
+      <img src="c:\Users\HP\Documents\OFPPT.png" alt="Logo OFPPT"
+        style="height: 65px; width: auto; object-fit: contain;" />
+      <img src="file:///C:/Users/HP/Documents/Logo-promptis.webp" alt="Logo Promptis"
+        style="height: 50px; width: auto; object-fit: contain;" />
+    </div>
+
+    <h2 style="text-align: center; border-bottom: none; font-size: 20pt; margin-top: 30px;">Résumé</h2>
+    
+    <h3 style="color: var(--blue); font-size: 13pt;">Version française</h3>
+    <p style="text-align: justify; line-height: 1.6; margin-bottom: 15px;">
+      Ce rapport présente la conception et la réalisation d'un système de gestion complet pour <strong>Promptis</strong>,
+      une entreprise marocaine de consulting IT. Face aux limitations des outils existants (gestion fragmentée sur Excel,
+      suivi des tickets par emails, absence d'une vue d'ensemble sur les projets), nous avons développé une solution
+      web centralisée appelée <strong>Promptis Manager</strong>. Cette plateforme intègre plusieurs modules métiers :
+      la gestion des ressources humaines, un CRM simplifié (employés et clients), la gestion et le suivi des projets,
+      ainsi qu'un portail client sécurisé doté d'un système de tickets de support.
+    </p>
+    <p style="text-align: justify; line-height: 1.6; margin-bottom: 15px;">
+      Techniquement, l'application repose sur une architecture moderne séparée (SPA / API REST). Le back-end
+      a été construit avec <strong>Laravel 11.x</strong> (PHP) communicant avec une base de données <strong>MySQL 8</strong>,
+      tandis que le front-end a été développé en <strong>React.js</strong> (avec Vite.js). La sécurité des accès et la
+      gestion des permissions (système RBAC) sont assurées par <strong>Laravel Sanctum</strong>. Développé selon
+      une approche incrémentale, ce projet m'a permis de maîtriser l'intégralité du cycle de vie logiciel, de
+      l'analyse des besoins au déploiement en production.
+    </p>
+
+    <h3 style="color: var(--blue); font-size: 13pt; margin-top: 30px;">English</h3>
+    <p style="text-align: justify; line-height: 1.6; margin-bottom: 15px;">
+      This report presents the design and implementation of a comprehensive management system for <strong>Promptis</strong>,
+      a Moroccan IT consulting company. Faced with the limitations of existing tools (fragmented workflow using
+      spreadsheets, email-based ticket tracking, and lack of project oversight), we developed a centralized web solution
+      named <strong>Promptis Manager</strong>. This platform integrates multiple functional modules: human resources
+      management, a simplified CRM (for employees and clients), project tracking, and a secure customer portal equipped
+      with a technical support ticketing system.
+    </p>
+    <p style="text-align: justify; line-height: 1.6; margin-bottom: 15px;">
+      Technologically, the application is built on a modern decoupled architecture (SPA / REST API). The back-end
+      was engineered using <strong>Laravel 11.x</strong> (PHP) interfacing with a <strong>MySQL 8</strong> database,
+      while the front-end was developed using <strong>React.js</strong> (powered by Vite.js). Access security and role-based
+      permission management (RBAC system) are handled by <strong>Laravel Sanctum</strong>. Developed through an incremental
+      approach, this project provided me with hands-on experience across the entire software development lifecycle, from
+      requirements analysis to production deployment.
+    </p>
+    
   </div>
 
   <!-- ══════════════════════════════════════════════════
@@ -656,27 +793,31 @@
       <li><strong>Figure 12</strong> : Gestionnaire de fichiers intégré</li>
     </ul>
 
-    <h2>Liste des Tableaux</h2>
-    <ul>
-      <li><strong>Tableau 1</strong> : Outils et langages Frontend</li>
-      <li><strong>Tableau 2</strong> : Outils et frameworks Backend</li>
-      <li><strong>Tableau 3</strong> : Technologies Bases de données et DevOps</li>
-      <li><strong>Tableau 4</strong> : Difficultés rencontrées et solutions apportées</li>
-      <li><strong>Tableau 5</strong> : Bilan des connaissances acquises</li>
-      <li><strong>Tableau 6</strong> : API de gestion des utilisateurs et rôles</li>
-      <li><strong>Tableau 7</strong> : API de gestion des tickets et des fichiers</li>
+    <h2 style="margin-top: 30px;">Liste des Tableaux</h2>
+    <ul style="line-height: 2;">
+      <li><strong>Tableau 1</strong> : Outils et langages Frontend (React, Tailwind CSS)</li>
+      <li><strong>Tableau 2</strong> : Outils et frameworks Backend (Laravel, PHP 8.2)</li>
+      <li><strong>Tableau 3</strong> : Technologies de Bases de données et DevOps (MySQL, Docker)</li>
+      <li><strong>Tableau 4</strong> : Analyse des difficultés rencontrées et solutions techniques apportées</li>
+      <li><strong>Tableau 5</strong> : Bilan des compétences professionnelles et transversales acquises</li>
+      <li><strong>Tableau 6</strong> : Documentation des Endpoints API - Module de Gestion des Utilisateurs</li>
+      <li><strong>Tableau 7</strong> : Documentation des Endpoints API - Module Projets, Tickets et Fichiers</li>
     </ul>
 
-    <h2>Liste des Abréviations</h2>
-    <ul>
-      <li><strong>OFPPT</strong> : Office de la Formation Professionnelle et de la Promotion du Travail</li>
-      <li><strong>API</strong> : Application Programming Interface</li>
-      <li><strong>CRUD</strong> : Create, Read, Update, Delete</li>
-      <li><strong>MCD / MLD</strong> : Modèle Conceptuel de Données / Modèle Logique de Données</li>
-      <li><strong>RBAC</strong> : Role-Based Access Control</li>
-      <li><strong>SPA</strong> : Single Page Application</li>
-      <li><strong>UX / UI</strong> : User Experience / User Interface</li>
-      <li><strong>SQL</strong> : Structured Query Language</li>
+    <h2 style="margin-top: 30px;">Liste des Abréviations</h2>
+    <ul style="line-height: 1.8;">
+      <li><strong>API</strong> : Application Programming Interface (Interface de Programmation Applicative)</li>
+      <li><strong>CRUD</strong> : Create, Read, Update, Delete (Opérations de base de données)</li>
+      <li><strong>MCD / MLD</strong> : Modèle Conceptuel / Logique de Données</li>
+      <li><strong>RBAC</strong> : Role-Based Access Control (Gestion des droits par rôles)</li>
+      <li><strong>SPA</strong> : Single Page Application (Application à interface unique et fluide)</li>
+      <li><strong>UX / UI</strong> : User Experience (Expérience) / User Interface (Interface)</li>
+      <li><strong>SQL</strong> : Structured Query Language (Langage de requêtes structuré)</li>
+      <li><strong>ORM</strong> : Object-Relational Mapping (Technologie Eloquent de Laravel)</li>
+      <li><strong>JSON</strong> : JavaScript Object Notation (Format d'échange de données léger)</li>
+      <li><strong>REST</strong> : Representational State Transfer (Standard d'architecture API)</li>
+      <li><strong>MVC</strong> : Modèle-Vue-Contrôleur (Design Pattern structural)</li>
+
     </ul>
   </div>
 
@@ -693,49 +834,69 @@
     </div>
 
     <h2>1. Introduction</h2>
-    <p>Dans le cadre de ma formation en <strong>Développement Digital – Full Stack</strong> à l'OFPPT, j'ai effectué un
-      stage de fin de formation d'une durée de <strong>5 semaines</strong> au sein de l'entreprise
-      <strong>Promptis</strong>, spécialisée dans le consulting IT à Casablanca, de janvier à février 2026.
-    </p>
-    <p>Ce stage m'a été confié avec un objectif clair : concevoir et développer un système complet répondant à un besoin
-      réel de l'entreprise. Le projet, baptisé <strong>Promptis Manager</strong>, est une application web full-stack de
-      gestion des ressources humaines et portail client.</p>
-    <p>Avant ce stage, Promptis gérait ses informations de manière dispersée : fichiers Excel, e-mails et outils
-      hétérogènes. L'objectif était de centraliser la gestion des employés, des clients, des projets et des tickets de
-      support dans une interface unique, moderne et sécurisée.</p>
-    <p>Ce rapport retrace les différentes étapes du projet, depuis l'analyse des besoins jusqu'à la livraison technique,
-      en passant par la conception architecturale et les choix technologiques effectués.</p>
+    <p>Dans le cadre de mon cursus académique en <strong>Développement Digital – Full Stack</strong> au sein de
+      l'<strong>ISGI</strong>, j'ai eu l'opportunité d'effectuer un stage de fin de formation d'une durée de <strong>5
+        semaines</strong>. Ce stage s'est déroulé au sein de l'entreprise <strong>Promptis IT Consulting</strong>,
+      cabinet de conseil en hautes technologies basé à Casablanca, du mois de janvier au mois de février 2026.</p>
+
+    <p>Ce stage constitue une étape charnière de mon parcours, me permettant de mettre en application les compétences
+      théoriques et pratiques acquises durant mes deux années de formation. L'objectif principal qui m'a été fixé était
+      de concevoir et de développer une solution logicielle innovante répondant à une problématique concrète
+      d'organisation interne. Le projet, baptisé <strong>Promptis Manager</strong>, se présente comme une application
+      web full-stack intégrée, destinée à la gestion centralisée des ressources humaines (RH), du suivi des projets
+      clients et du support technique.</p>
+
+    <p>Avant l'implémentation de cette solution, l'entreprise Promptis gérait ses flux d'informations de manière
+      fragmentée et traditionnelle, s'appuyant principalement sur des tableurs Excel disparates, des échanges de
+      courriels volumineux et des outils de communication non synchronisés. Cette méthode de travail présentait des
+      risques de perte de données, des lenteurs dans le suivi opérationnel et un manque de visibilité globale sur
+      l'activité en temps réel.</p>
+
+    <p>Le présent rapport retrace avec précision l'ensemble du cycle de vie du projet Promptis Manager. Il expose la
+      démarche d'analyse fonctionnelle, les choix architecturaux structurants, la conception des modèles de données,
+      ainsi que les phases de réalisation technique impliquant les technologies React et Laravel. Enfin, il conclut sur
+      le bilan de cette expérience enrichissante et sur la mise en production effective de la plateforme.</p>
 
     <h2>2. Présentation de l'Entreprise d'Accueil</h2>
 
     <h3>2.1 À propos de Promptis</h3>
     <div class="info-box">
-      <div class="row"><span class="label">Nom</span><span>Promptis</span></div>
-      <div class="row"><span class="label">Secteur</span><span>IT Consulting Services</span></div>
-      <div class="row"><span class="label">Localisation</span><span>Casablanca, Maroc</span></div>
-      <div class="row"><span class="label">Type</span><span>Entreprise de services numériques (ESN)</span></div>
+      <div class="row"><span class="label">Nom</span><span>Promptis IT Consulting</span></div>
+      <div class="row"><span class="label">Secteur</span><span>Conseil et Services en Ingénierie Informatique
+          (ESN)</span></div>
+      <div class="row"><span class="label">Localisation</span><span>Technopark, Casablanca, Maroc</span></div>
+      <div class="row"><span class="label">Effectif</span><span>Équipe agile pluridisciplinaire</span></div>
       <div class="row"><span class="label">Site web</span><span>www.promptis.ma</span></div>
     </div>
-    <p>Promptis est une entreprise de consulting IT basée à Casablanca qui accompagne ses clients dans leur
-      transformation digitale. Elle propose des solutions sur mesure, adaptées aux besoins spécifiques de chaque
-      organisation, en combinant expertise technique et approche conseil.</p>
+    <p>Promptis est une entreprise de consulting IT dynamique basée à Casablanca, spécialisée dans l'accompagnement à la
+      transformation digitale des organisations. Positionnée comme une véritable ESN (Entreprise de Services du
+      Numérique), sa mission est de combler le fossé entre les besoins stratégiques métiers et les solutions
+      technologiques complexes.</p>
 
-    <h3>2.2 Domaines d'Expertise</h3>
+    <p>Fondée sur des valeurs d'innovation et d'agilité, l'entreprise se distingue par sa capacité à délivrer des
+      produits logiciels à haute valeur ajoutée, en mettant l'accent sur l'expérience utilisateur (UX) et la robustesse
+      architecturale. Promptis intervient tant sur des projets de modernisation de systèmes hérités (legacy) que sur le
+      développement d'applications cloud-native de nouvelle génération.</p>
+
+    <h3>2.2 Domaines d'Expertise et Services</h3>
+    <p>L'expertise de Promptis couvre l'ensemble du cycle de vie d'un produit digital, offrant ainsi une vision à 360
+      degrés de l'informatique d'entreprise :</p>
     <ul>
-      <li><strong>Développement de logiciels</strong> : Applications sur mesure adaptées aux besoins métier</li>
-      <li><strong>Data Engineering &amp; Analytics</strong> : Solutions de gestion, traitement et analyse de données
-      </li>
-      <li><strong>Solutions Web &amp; E-Commerce</strong> : Sites web, plateformes e-commerce, applications web
-        progressives</li>
-      <li><strong>Infrastructure Cloud &amp; DevOps</strong> : Migration cloud, automatisation des déploiements, CI/CD
-      </li>
-      <li><strong>Design UX/UI</strong> : Conception d'interfaces utilisateur modernes et accessibles</li>
+      <li><strong>Développement de Logiciels Métiers</strong> : Création d'outils ERP/CRM sur mesure et plateformes SaaS
+        hautement scalables.</li>
+      <li><strong>Data Engineering &amp; Intelligence Artificielle</strong> : Mise en place de pipelines de données, de
+        systèmes de BI (Business Intelligence) et d'algorithmes prédictifs pour l'aide à la décision.</li>
+      <li><strong>Transformation Cloud &amp; Modernisation IT</strong> : Accompagnement dans la migration vers
+        AWS/Azure/GCP et implémentation de cultures DevOps pour accélérer les cycles de livraison.</li>
+      <li><strong>Conception Digitale &amp; UX Strategy</strong> : Analyse des parcours utilisateurs pour concevoir des
+        interfaces intuitives qui maximisent l'engagement et l'efficacité opérationnelle.</li>
     </ul>
 
-    <h3>2.3 Organisation</h3>
-    <p>L'entreprise est structurée autour de plusieurs pôles de compétences : une équipe de développement (full-stack,
-      front-end, back-end), une équipe data (data engineers, data analysts), une équipe infrastructure (DevOps,
-      administrateurs système), une équipe design (UX/UI), et une direction de gestion de projet.</p>
+    <h3>2.3 Valeurs et Méthodologie</h3>
+    <p>L'approche de Promptis repose sur la méthodologie <strong>Agile Scrum</strong>, garantissant une transparence
+      totale et une adaptation constante aux retours clients. L'excellence technique, la proximité avec le client et
+      l'engagement vers la performance sont les piliers qui permettent à l'entreprise de maintenir une relation de
+      confiance durable avec ses partenaires nationaux et internationaux.</p>
   </div>
 
   <!-- ══════════════════════════════════════════════════
@@ -780,7 +941,7 @@
       </colgroup>
       <thead>
         <tr>
-          <th>#</th>
+          <th></th>
           <th>Objectif</th>
           <th>Description</th>
         </tr>
@@ -966,12 +1127,20 @@
     </div>
 
     <h3>4.5 Modèle Conceptuel de Données (MCD)</h3>
-    <p>Le MCD formalise les entités métier indépendamment de l'implémentation technique et met en évidence les
-      associations clés entre utilisateurs, projets, tickets et fichiers.</p>
+    <p>Le MCD constitue l'étape fondamentale de la modélisation. Il formalise les entités métier de Promptis Manager
+      indépendamment des contraintes techniques de stockage. Cette abstraction permet de valider la logique des règles
+      de gestion, notamment la gestion des rôles et les relations entre les différents modules applicatifs.</p>
 
-    <img src="c:\Users\HP\Downloads\Diagram_Promptis\MCD_Promptis.drawio.png" alt="Modèle Conceptuel de Données (MCD)"
-      style="width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 14px 0;" />
-    <p class="img-caption">Figure 4 – Modèle Conceptuel de Données</p>
+    <p><strong>Règles de gestion clés :</strong> Un projet est piloté par un seul client mais peut mobiliser plusieurs
+      employés. Inversement, un employé peut être affecté à une multitude de projets au cours de sa carrière chez
+      Promptis. Les tickets de support sont systématiquement rattachés à un projet unique pour garantir une traçabilité
+      parfaite.</p>
+
+    <div class="diagram-block">
+      <img src="c:\Users\HP\Downloads\Diagram_Promptis\MCD_Promptis.drawio.png" alt="Modèle Conceptuel de Données (MCD)"
+        style="width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 14px 0;" />
+      <p class="img-caption">Figure 6 – Modèle Conceptuel de Données (Architecture Web)</p>
+    </div>
   </div>
 
   <!-- ══════════════════════════════════════════════════
@@ -986,14 +1155,23 @@
     </div>
 
     <h3>4.6 Modèle Logique de Données (MLD)</h3>
-    <p>Le MLD traduit le MCD en schéma relationnel prêt à être implémenté. La base de données
-      <strong>promptis_manager</strong> contient 9 tables : <em>users, employees, clients, projects, project_employee,
-        tickets, ticket_comments, files, notifications</em>.
-    </p>
+    <p>Le MLD assure la transition entre l'abstraction conceptuelle et l'organisation physique des données. Dans notre
+      architecture Laravel, ce schéma a été traduit par des <strong>Migrations</strong> PHP, permettant de versionner la
+      structure de la base de données <code>promptis_manager</code>.</p>
 
-    <img src="c:\Users\HP\Downloads\Diagram_Promptis\MLD_Promptis.drawio.png" alt="Modèle Logique de Données (MLD)"
-      style="width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 14px 0;" />
-    <p class="img-caption">Figure 5 – Modèle Logique de Données</p>
+    <p>L'implémentation repose sur <strong>9 tables physiques</strong> hautement relationnelles. L'utilisation de clés
+      étrangères (Foreign Keys) garantit l'intégrité référentielle, empêchant par exemple la suppression d'un client
+      tant que des projets actifs lui sont rattachés. Les tables de pivot (comme <code>project_employee</code>)
+      permettent de gérer les relations Many-to-Many avec efficacité.</p>
+
+    <div class="diagram-block">
+      <img src="c:\Users\HP\Downloads\Diagram_Promptis\MLD_Promptis.drawio.png" alt="Modèle Logique de Données (MLD)"
+        style="width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 14px 0;" />
+      <p class="img-caption">Figure 7 – Modèle Logique de Données (Schéma Physique MySQL)</p>
+    </div>
+
+    <p>Cette structure normalisée en 3ème forme normale (3NF) minimise la redondance des données et optimise les
+      performances des requêtes Eloquent utilisées par le backend.</p>
   </div>
 
   <!-- ══════════════════════════════════════════════════
@@ -1008,10 +1186,10 @@
     </div>
 
     <h2>5. Choix Technologiques & Architecture</h2>
+    <p>Le choix des technologies est une étape déterminante qui conditionne la réussite de tout projet logiciel. Pour <strong>Promptis Manager</strong>, nous avons opté pour une architecture client-serveur découplée, séparant la logique de présentation (Front-end) de la logique métier (Back-end) via des requêtes API REST. Ce découplage technologique apporte non seulement une scalabilité à l'application, mais permet aussi de mobiliser des développeurs spécialisés sur chaque couche logicielle.</p>
+
     <h3>5.1 Stack technique Globale</h3>
-    <p>La conception de <strong>Promptis Manager</strong> repose sur une architecture moderne de type Single Page
-      Application (SPA) en isolant parfaitement le front-end du back-end. Cette séparation garantit une flexibilité
-      technique optimale, des performances accrues et une maintenabilité simplifiée.</p>
+    <p>La conception de <strong>Promptis Manager</strong> repose sur une architecture moderne de type Single Page Application (SPA), garantissant une flexibilité technique optimale, des performances accrues grâce au chargement asynchrone des composants, et une maintenabilité simplifiée du code.</p>
 
     <div class="highlight-box">
       Approche adoptée : API RESTful (Backend) + Client SPA réactif (Frontend)
@@ -1381,11 +1559,11 @@
     <p>Ce module agit comme la porte d'entrée inviolable de l'application. La sécurité y est omni-présente, cachée sous
       une interface attrayante.</p>
 
-    <div style="display: flex; gap: 15px; margin: 20px 0; justify-content: center;">
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; margin: 20px 0;">
       <img src="c:\Users\HP\Downloads\Diagram_Promptis\LoginPromptis.jpeg" alt="Page de Connexion"
-        style="width: 48%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        style="width: 80%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
       <img src="c:\Users\HP\Downloads\Diagram_Promptis\InscriptionPromptis.png" alt="Page d'Inscription"
-        style="width: 48%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        style="width: 80%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
     </div>
     <p class="img-caption">Figure 8 - Vues des pages de Connexion et d'Inscription</p>
 
@@ -1419,7 +1597,8 @@ axiosClient.interceptors.request.use((config) => {
       l'organisation pour l'administrateur, ou un récapitulatif personnel pour le client.</p>
 
     <div style="margin: 20px 0; text-align: center;">
-      <img src="c:\Users\HP\Downloads\Diagram_Promptis\DashboardPromptis.png" alt="Dashboard" style="width: 100%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+      <img src="c:\Users\HP\Downloads\Diagram_Promptis\DashboardPromptis.png" alt="Dashboard"
+        style="width: 100%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
       <p class="img-caption">Figure 9 - Tableau de bord côté administrateur</p>
     </div>
 
@@ -1447,9 +1626,11 @@ axiosClient.interceptors.request.use((config) => {
     <p>L'administration opérationnelle implique la gestion stricte du personnel interne (employés Promptis) et des
       entreprises externes (clients du portail).</p>
 
-    <div style="display: flex; gap: 15px; margin: 20px 0; justify-content: center;">
-      <img src="c:\Users\HP\Downloads\Diagram_Promptis\EmployesPromptis.png" alt="Employés" style="width: 48%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-      <img src="c:\Users\HP\Downloads\Diagram_Promptis\ClientPromptis.png" alt="Clients" style="width: 48%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; margin: 20px 0;">
+      <img src="c:\Users\HP\Downloads\Diagram_Promptis\EmployesPromptis.png" alt="Employés"
+        style="width: 80%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+      <img src="c:\Users\HP\Downloads\Diagram_Promptis\ClientPromptis.png" alt="Clients"
+        style="width: 80%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
     </div>
     <p class="img-caption">Figure 10 - Interface de gestion Clients et Employés</p>
 
@@ -1477,7 +1658,8 @@ axiosClient.interceptors.request.use((config) => {
       et gère l'état d'avancement ainsi que le budget alloué par Promptis.</p>
 
     <div style="margin: 20px 0; text-align: center;">
-      <img src="c:\Users\HP\Downloads\Diagram_Promptis\ProjetPromptis.png" alt="Projets" style="width: 100%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+      <img src="c:\Users\HP\Downloads\Diagram_Promptis\ProjetPromptis.png" alt="Projets"
+        style="width: 100%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
       <p class="img-caption">Figure 11 - Module Projets et état métier</p>
     </div>
 
@@ -1505,7 +1687,8 @@ axiosClient.interceptors.request.use((config) => {
       log centralisé, horodaté et commentable lié directement à l'ID d'un projet.</p>
 
     <div style="margin: 20px 0; text-align: center;">
-      <img src="c:\Users\HP\Downloads\Diagram_Promptis\TicketPromptis.png" alt="Tickets" style="width: 100%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+      <img src="c:\Users\HP\Downloads\Diagram_Promptis\TicketPromptis.png" alt="Tickets"
+        style="width: 100%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
       <p class="img-caption">Figure 12 - Système de Ticketing Helpdesk</p>
     </div>
 
@@ -1531,7 +1714,8 @@ axiosClient.interceptors.request.use((config) => {
       téléversent des spécifications, l'équipe uploade les livrables .zip et docs de rendu.</p>
 
     <div style="margin: 20px 0; text-align: center;">
-      <img src="c:\Users\HP\Downloads\Diagram_Promptis\FichierPromptis.png" alt="Fichiers" style="width: 100%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+      <img src="c:\Users\HP\Downloads\Diagram_Promptis\FichierPromptis.png" alt="Fichiers"
+        style="width: 100%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
       <p class="img-caption">Figure 13 - UI/UX du GED intégré</p>
     </div>
 
@@ -1671,13 +1855,39 @@ axiosClient.interceptors.request.use((config) => {
       <li>Factorisation intégrale des appels API à l'intérieur d'un Service de Config.</li>
     </ul>
 
-    <h3>8.3 Préparation au déploiement production</h3>
-    <p>Pour le passage en mode production du SI au terme du stage :</p>
-    <div class="info-box">
-      <p>1. <strong>Backend</strong> : Exécution de <code>php artisan optimize</code> et stockage des configurations en
-        fichiers plats via <code>config:cache</code>. Basculement de l'environnement DEV à PROD.<br>
-        2. <strong>Frontend</strong> : Compilation par Vite via <code>npm run build</code> générant des fichiers HTML et
-        JS minimisé, transpilés, hashés garantissant la révocation de cache navigateur lors des MAJ.</p>
+    <h3>8.3 Déploiement et Mise en Production</h3>
+    <p>Le projet a franchi l'étape cruciale du passage de l'environnement de développement local vers une infrastructure
+      cloud professionnelle, garantissant ainsi l'accessibilité permanente et la sécurité des données.</p>
+
+    <h4>8.3.1 Frontend : Hébergement sur Vercel</h4>
+    <p>Le frontend React a été déployé sur <strong>Vercel</strong>, une plateforme cloud optimisée pour les applications
+      modernes. Ce choix a permis d'implémenter :</p>
+    <ul>
+      <li><strong>CI/CD Automatisé</strong> : Chaque mise à jour sur le dépôt GitHub déclenche automatiquement une
+        nouvelle compilation et un déploiement sécurisé.</li>
+      <li><strong>Gestion du Routage SPA</strong> : Utilisation d'un fichier <code>vercel.json</code> pour rediriger
+        toutes les requêtes vers <code>index.html</code>, permettant une navigation fluide sans rechargement.</li>
+      <li><strong>Certificat SSL (HTTPS)</strong> : Sécurisation intégrale des échanges entre le client et le serveur.
+      </li>
+    </ul>
+
+    <h4>8.3.2 Backend & BDD : Hébergement sur Railway</h4>
+    <p>Pour le backend Laravel et la base de données MySQL, le choix s'est porté sur <strong>Railway</strong>, offrant
+      une infrastructure robuste basée sur les conteneurs :</p>
+    <ul>
+      <li><strong>Conteneurisation Docker</strong> : L'application est encapsulée dans un <code>Dockerfile</code>
+        personnalisé, incluant Nginx et PHP-FPM, garantissant que l'environnement de production est identique au
+        développement.</li>
+      <li><strong>Automatisation des Migrations</strong> : Un script <code>start.sh</code> exécute automatiquement les
+        migrations de base de données à chaque déploiement, assurant la cohérence du schéma SQL.</li>
+      <li><strong>Base de Données Gérée</strong> : MySQL est hébergé de manière isolée avec des sauvegardes
+        automatiques.</li>
+    </ul>
+
+    <div class="highlight-box" style="border-color: #16a34a; background: #f0fdf4; color: #16a34a;">
+      🚀 <strong>Accès Live :</strong> L'application est accessible en ligne à l'adresse suivante :<br>
+      <a href="https://promptis-six.vercel.app"
+        style="color: #15803d; text-decoration: underline;">https://promptis-six.vercel.app</a>
     </div>
   </div>
 
@@ -1762,7 +1972,7 @@ axiosClient.interceptors.request.use((config) => {
     </ul>
 
     <p style="text-align: right; margin-top: 40px; font-style: italic; color: #555;">Ce document achève de formuler ma
-      gratitude envers l'équipe Promptis et concrétise l'accomplissement d'un parcours exceptionnel auprès de l'ISTA de
+      gratitude envers l'équipe Promptis et concrétise l'accomplissement d'un parcours exceptionnel auprès de l'ISGI de
       l'OFPPT.</p>
   </div>
 
