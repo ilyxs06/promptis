@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Client;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -19,21 +20,27 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'company_name' => 'required|string|max:255',
+            'contact_name' => 'nullable|string|max:255',
             'phone' => 'nullable|string|max:20',
         ]);
 
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'role' => 'client',
-        ]);
+        $user = DB::transaction(function () use ($validated) {
+            $user = User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+                'role' => 'client',
+            ]);
 
-        $client = Client::create([
-            'user_id' => $user->id,
-            'company_name' => $validated['company_name'],
-            'phone' => $validated['phone'],
-        ]);
+            Client::create([
+                'user_id' => $user->id,
+                'company_name' => $validated['company_name'],
+                'contact_name' => $validated['contact_name'] ?? $validated['name'],
+                'phone' => $validated['phone'] ?? null,
+            ]);
+
+            return $user;
+        });
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
