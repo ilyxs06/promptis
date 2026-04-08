@@ -120,9 +120,9 @@ export const projectService = {
   create: async (data) => (await api.post('/projects', data)).data,
   update: async (id, data) => (await api.put(`/projects/${id}`, data)).data,
   delete: async (id) => (await api.delete(`/projects/${id}`)).data,
-  assignEmployee: async (projectId, employeeId, role) => 
+  assignEmployee: async (projectId, employeeId, role) =>
     (await api.post(`/projects/${projectId}/assign-employee`, { employee_id: employeeId, role })).data,
-  removeEmployee: async (projectId, employeeId) => 
+  removeEmployee: async (projectId, employeeId) =>
     (await api.delete(`/projects/${projectId}/employees/${employeeId}`)).data,
 };
 
@@ -133,14 +133,14 @@ export const ticketService = {
   create: async (data) => (await api.post('/tickets', data)).data,
   update: async (id, data) => (await api.put(`/tickets/${id}`, data)).data,
   delete: async (id) => (await api.delete(`/tickets/${id}`)).data,
-  addComment: async (ticketId, comment) => 
+  addComment: async (ticketId, comment) =>
     (await api.post(`/tickets/${ticketId}/comments`, { comment })).data,
 };
 
 // Service fichiers
 export const fileService = {
   getByProject: async (projectId) => (await api.get(`/projects/${projectId}/files`)).data,
-  upload: async (projectId, formData) => 
+  upload: async (projectId, formData) =>
     (await api.post(`/projects/${projectId}/files`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     })).data,

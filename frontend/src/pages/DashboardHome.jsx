@@ -106,13 +106,13 @@ const ProgressCard = ({ label, value, max, color }) => {
 
 /* ─── Recent row items ───────────────────────────────────────────────────── */
 const statusColors = {
-  planifie: 'bg-gray-100 text-gray-800', 
-  en_cours: 'bg-blue-100 text-blue-800', 
+  planifie: 'bg-gray-100 text-gray-800',
+  en_cours: 'bg-blue-100 text-blue-800',
   en_pause: 'bg-yellow-100 text-yellow-800',
-  termine: 'bg-green-100 text-green-800', 
+  termine: 'bg-green-100 text-green-800',
   annule: 'bg-red-100 text-red-800',
-  ouvert: 'bg-blue-100 text-blue-800', 
-  resolu: 'bg-green-100 text-green-800', 
+  ouvert: 'bg-blue-100 text-blue-800',
+  resolu: 'bg-green-100 text-green-800',
   ferme: 'bg-gray-100 text-gray-800',
 };
 const statusLabels = {
@@ -121,9 +121,9 @@ const statusLabels = {
   ouvert: 'Ouvert', resolu: 'Résolu', ferme: 'Fermé',
 };
 const priorityColors = {
-  basse: 'bg-green-100 text-green-800', 
-  moyenne: 'bg-yellow-100 text-yellow-800', 
-  haute: 'bg-orange-100 text-orange-800', 
+  basse: 'bg-green-100 text-green-800',
+  moyenne: 'bg-yellow-100 text-yellow-800',
+  haute: 'bg-orange-100 text-orange-800',
   urgente: 'bg-red-100 text-red-800',
 };
 
@@ -172,38 +172,38 @@ const DashboardHome = () => {
   }
 
   /* ── Derived numbers ── */
-  const totalProj  = stats?.totalProjects  ?? projects.length;
+  const totalProj = stats?.totalProjects ?? projects.length;
   const activeProj = stats?.activeProjects ?? projects.filter(p => p.status === 'en_cours').length;
-  const doneProj   = stats?.completedProjects ?? projects.filter(p => p.status === 'termine').length;
-  const totalEmp   = stats?.totalEmployees ?? 0;
-  const totalCli   = stats?.totalClients ?? 0;
-  const openTick   = stats?.openTickets  ?? tickets.filter(t => t.status === 'ouvert').length;
-  const urgTick    = stats?.urgentTickets ?? tickets.filter(t => t.priority === 'urgente').length;
-  const myProj     = stats?.myProjects   ?? projects.length;
-  const myTick     = stats?.myTickets    ?? tickets.length;
+  const doneProj = stats?.completedProjects ?? projects.filter(p => p.status === 'termine').length;
+  const totalEmp = stats?.totalEmployees ?? 0;
+  const totalCli = stats?.totalClients ?? 0;
+  const openTick = stats?.openTickets ?? tickets.filter(t => t.status === 'ouvert').length;
+  const urgTick = stats?.urgentTickets ?? tickets.filter(t => t.priority === 'urgente').length;
+  const myProj = stats?.myProjects ?? projects.length;
+  const myTick = stats?.myTickets ?? tickets.length;
   const assignedTick = stats?.assignedTickets ?? tickets.length;
 
   /* ── Recent data (last 5) ── */
   const recentProjects = [...projects].slice(0, 5);
-  const recentTickets  = [...tickets].filter(t => t.status !== 'ferme').slice(0, 5);
+  const recentTickets = [...tickets].filter(t => t.status !== 'ferme').slice(0, 5);
 
   /* ── Admin stat cards ── */
   const adminCards = [
-    { label: 'Projets Actifs',  value: activeProj, color: chartColors.indigo, trend: 'up',   trendVal: '+5.1%', spark: genSparkData(activeProj || 3) },
-    { label: 'Terminés',        value: doneProj,   color: chartColors.emerald, trend: 'up',   trendVal: '+3.4%', spark: genSparkData(doneProj || 2) },
-    { label: 'Tickets Ouverts', value: openTick,   color: chartColors.amber, trend: 'down', trendVal: '-2%',   spark: genSparkData(openTick || 4) },
-    { label: 'Tickets Urgents', value: urgTick,    color: chartColors.red, trend: 'down', trendVal: '-1.5%', spark: genSparkData(urgTick  || 1) },
+    { label: 'Projets Actifs', value: activeProj, color: chartColors.indigo, trend: 'up', trendVal: '+5.1%', spark: genSparkData(activeProj || 3) },
+    { label: 'Terminés', value: doneProj, color: chartColors.emerald, trend: 'up', trendVal: '+3.4%', spark: genSparkData(doneProj || 2) },
+    { label: 'Tickets Ouverts', value: openTick, color: chartColors.amber, trend: 'down', trendVal: '-2%', spark: genSparkData(openTick || 4) },
+    { label: 'Tickets Urgents', value: urgTick, color: chartColors.red, trend: 'down', trendVal: '-1.5%', spark: genSparkData(urgTick || 1) },
   ];
   const employeeCards = [
-    { label: 'Mes Projets',     value: myProj,      color: chartColors.indigo, trend: 'up',   trendVal: '+12%', spark: genSparkData(myProj || 2) },
-    { label: 'Projets Actifs',  value: activeProj,  color: chartColors.emerald, trend: 'up',   trendVal: '+5%',  spark: genSparkData(activeProj || 1) },
-    { label: 'Tickets Assignés',value: assignedTick, color: chartColors.amber, trend: 'down', trendVal: '-3%', spark: genSparkData(assignedTick || 3) },
-    { label: 'Tickets Ouverts', value: openTick,    color: chartColors.red, trend: 'down', trendVal: '-2%',  spark: genSparkData(openTick || 2) },
+    { label: 'Mes Projets', value: myProj, color: chartColors.indigo, trend: 'up', trendVal: '+12%', spark: genSparkData(myProj || 2) },
+    { label: 'Projets Actifs', value: activeProj, color: chartColors.emerald, trend: 'up', trendVal: '+5%', spark: genSparkData(activeProj || 1) },
+    { label: 'Tickets Assignés', value: assignedTick, color: chartColors.amber, trend: 'down', trendVal: '-3%', spark: genSparkData(assignedTick || 3) },
+    { label: 'Tickets Ouverts', value: openTick, color: chartColors.red, trend: 'down', trendVal: '-2%', spark: genSparkData(openTick || 2) },
   ];
   const clientCards = [
-    { label: 'Mes Projets',     value: projects.length, color: chartColors.indigo, trend: 'up', trendVal: '+6.1%', spark: genSparkData(projects.length || 2) },
-    { label: 'Projets Actifs',  value: projects.filter(p => p.status === 'en_cours').length, color: chartColors.emerald, trend: 'up', trendVal: '+4%', spark: genSparkData(3) },
-    { label: 'Mes Tickets',     value: tickets.length,  color: chartColors.amber, trend: 'down', trendVal: '-1%', spark: genSparkData(tickets.length || 3) },
+    { label: 'Mes Projets', value: projects.length, color: chartColors.indigo, trend: 'up', trendVal: '+6.1%', spark: genSparkData(projects.length || 2) },
+    { label: 'Projets Actifs', value: projects.filter(p => p.status === 'en_cours').length, color: chartColors.emerald, trend: 'up', trendVal: '+4%', spark: genSparkData(3) },
+    { label: 'Mes Tickets', value: tickets.length, color: chartColors.amber, trend: 'down', trendVal: '-1%', spark: genSparkData(tickets.length || 3) },
     { label: 'Tickets Ouverts', value: tickets.filter(t => t.status === 'ouvert').length, color: chartColors.red, trend: 'down', trendVal: '-2%', spark: genSparkData(2) },
   ];
 
@@ -230,9 +230,9 @@ const DashboardHome = () => {
       {/* ── Admin extra: Progress cards ── */}
       {isAdmin && (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-          <ProgressCard label="Taux de complétion" value={doneProj}   max={totalProj || 1} color={chartColors.emerald} />
-          <ProgressCard label="Employés actifs"    value={totalEmp}   max={totalEmp || 1}  color={chartColors.indigo} />
-          <ProgressCard label="Clients actifs"     value={totalCli}   max={totalCli || 1}  color={chartColors.amber} />
+          <ProgressCard label="Taux de complétion" value={doneProj} max={totalProj || 1} color={chartColors.emerald} />
+          <ProgressCard label="Employés actifs" value={totalEmp} max={totalEmp || 1} color={chartColors.indigo} />
+          <ProgressCard label="Clients actifs" value={totalCli} max={totalCli || 1} color={chartColors.amber} />
         </div>
       )}
 
@@ -274,7 +274,7 @@ const DashboardHome = () => {
                     </div>
                     <span className="text-xs text-gray-400">{p.progress ?? 0}%</span>
                   </div>
-                  <span 
+                  <span
                     className={`text-xs font-medium px-2 py-0.5 rounded-full ${statusColors[p.status] || 'bg-gray-100 text-gray-800'}`}
                   >
                     {statusLabels[p.status] ?? p.status}
@@ -307,8 +307,8 @@ const DashboardHome = () => {
                     {t.priority === 'urgente'
                       ? <ExclamationTriangleIcon className="h-4 w-4" />
                       : t.status === 'resolu'
-                      ? <CheckCircleIcon className="h-4 w-4" />
-                      : <ClockIcon className="h-4 w-4" />
+                        ? <CheckCircleIcon className="h-4 w-4" />
+                        : <ClockIcon className="h-4 w-4" />
                     }
                   </div>
                   <div className="min-w-0">
