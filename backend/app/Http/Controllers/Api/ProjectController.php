@@ -16,8 +16,20 @@ class ProjectController extends Controller
 
         // Filtrer selon le rôle
         if ($user->role === 'client') {
+            if (!$user->client) {
+                return response()->json([
+                    'message' => 'Profil client introuvable pour cet utilisateur.',
+                ], 422);
+            }
+
             $query->where('client_id', $user->client->id);
         } elseif ($user->role === 'employee') {
+            if (!$user->employee) {
+                return response()->json([
+                    'message' => 'Profil employé introuvable pour cet utilisateur.',
+                ], 422);
+            }
+
             $query->whereHas('employees', function ($q) use ($user) {
                 $q->where('employee_id', $user->employee->id);
             });
