@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://promptis.onrender.com/api';
+const API_URL = import.meta.env.VITE_API_URL || 'https://promptis.onrender.com/api';
 
 // Instance Axios configurée
 const api = axios.create({
